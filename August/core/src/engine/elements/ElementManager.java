@@ -18,7 +18,6 @@ import engine.elements.Elements.StoneMedium;
 import engine.elements.Elements.StoneSmallDouble;
 import engine.elements.Elements.StoneSmallSingle;
 import engine.entities.Entity;
-import engine.entities.Entity.LayerIndex;
 import engine.graphics.Camera;
 import engine.tiles.Tile;
 import engine.tiles.TileManager;

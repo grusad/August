@@ -50,6 +50,10 @@ public class AudioManager {
 		sound.play(SOUND_VOLUME);
 	}
 	
+	public static void playSound(Sound sound, float pitch){
+		sound.play(SOUND_VOLUME, pitch, 0);
+	}
+	
 	public static void playMusic(Music music){
 		music.play();
 		music.setVolume(MUSIC_VOLUME);

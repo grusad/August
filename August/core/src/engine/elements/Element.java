@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import engine.audio.AudioManager;
 import engine.elements.ElementReader.ElementData;
 import engine.entities.Entity;
 import engine.graphics.TextureSheet;
@@ -50,10 +51,11 @@ public class Element extends Entity{
 		this.maxHP = this.currentHP = data.hp;
 	}
 	
-	public void update(){
+	public void update(){ 
 		
 		if(currentHP <= 0){
 			worldManager.getElementManager().removeElement(this);
+			AudioManager.playSound(AudioManager.getSound("button"), 0.5f);
 			ParticleManager.spawnParticleEffect(ParticleType.MineParticle, getHitBoxCenterPos(), 100);
 		} 
 		

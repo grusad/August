@@ -33,7 +33,7 @@ public class Player extends Mob{
 	public static float THIRST = 100;
 	
 	private float aimAngle = 0;
-	private float cooldown = .05f;
+	private float cooldown = .25f;
 	private float cooldownTimer = 0;
 	
 	private Element selectedElement = null;
@@ -104,15 +104,13 @@ public class Player extends Mob{
 	
 	private void selectElement(){
 		
-		//Checks if the element is removed or not. If it is removed, make selectedElement to null.
-		if(selectedElement != null){
-			 if(selectedElement.getCurrentHP() <= 0){
-				 selectedElement = null;
-			 }
-		}
-		
 		//Checks if the aimbox is not intersecting with the selectedElements hitbox. if its not, make selectedElement to null.
 		if(selectedElement != null){
+			
+			 if(selectedElement.getCurrentHP() <= 0){
+				 selectedElement = null;
+				 return;
+			 }
 			
 			selectedElement.setTransparency(valueBouncer.updateAndReturnValue());
 			
