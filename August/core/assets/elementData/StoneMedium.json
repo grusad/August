@@ -1,0 +1,12 @@
+{
+
+hp: 300
+textureXOffset: 5
+textureYOffset: 5
+hitBoxW: 22
+hitBoxH: 10
+layerIndex: 0
+isMinable: true
+isSolid: true
+
+}
