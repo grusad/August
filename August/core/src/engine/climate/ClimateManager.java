@@ -1,6 +1,7 @@
 package engine.climate;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,12 +47,16 @@ public class ClimateManager {
 	}
 	
 	public void setRandomValues(){
-		windLevel = random.nextFloat();
+		windLevel = getRoundedFloatValue(random.nextFloat());
 		if(random.nextBoolean()) windLevel *= -1;
-		rainLevel = random.nextFloat();
-		fogLevel = random.nextFloat();
+		rainLevel = getRoundedFloatValue(random.nextFloat());
+		fogLevel = getRoundedFloatValue(random.nextFloat());
 		duration = random.nextInt(120) + 20;
-		temperature = random.nextInt(38);
+		temperature = ThreadLocalRandom.current().nextInt(28, 45);
+	}
+	
+	private float getRoundedFloatValue(float value){
+		return (float) Math.ceil(( (double) (random.nextFloat() * 10))) / 10;
 	}
 
 	/** Returns a value between (-1) and 1*/
