@@ -17,13 +17,13 @@ import engine.utils.Box;
 import engine.utils.DataManager.PlayerData;
 import engine.utils.Input;
 import engine.utils.ValueBouncer;
-import engine.utils.ValueBouncer.InvalidNumberException;
 
 public class Player extends Mob{
 	
-	
 	private static float HIT_DMG = 1;
-	private static float MOVE_SPEED = 1;
+	private static float DEBUG_SPEED = 64 * 5;
+	private static float MOVE_SPEED = 64;
+	private static float SWIM_SPEED = 32;
 	private static float AIM_LENGTH = 30;
 	
 	public static float HEALTH = 100;
@@ -46,11 +46,6 @@ public class Player extends Mob{
 	@Override
 	public void update() {
 		
-		if(DebugManager.IN_DEBUG_MODE){
-			
-			if(Gdx.input.isKeyPressed(Keys.SPACE)) MOVE_SPEED = 30;
-			else MOVE_SPEED = 1;
-		}
 		
 		super.update();
 
@@ -75,13 +70,16 @@ public class Player extends Mob{
 		float xx = 0;
 		float yy = 0;
 		
+		float speed = MOVE_SPEED;
 		
-		if(Gdx.input.isKeyPressed(Keys.D)) xx += (MOVE_SPEED - Gdx.graphics.getDeltaTime());
-		if(Gdx.input.isKeyPressed(Keys.A)) xx -= (MOVE_SPEED - Gdx.graphics.getDeltaTime());
-		if(Gdx.input.isKeyPressed(Keys.W)) yy += (MOVE_SPEED - Gdx.graphics.getDeltaTime());
-		if(Gdx.input.isKeyPressed(Keys.S)) yy -= (MOVE_SPEED - Gdx.graphics.getDeltaTime());
+		if(isSwimming()) speed = SWIM_SPEED;
 		
+		if(DebugManager.IN_DEBUG_MODE && Gdx.input.isKeyPressed(Keys.SPACE)) speed = DEBUG_SPEED;
 		
+		if(Gdx.input.isKeyPressed(Keys.D)) xx += speed * Gdx.graphics.getDeltaTime();
+		if(Gdx.input.isKeyPressed(Keys.A)) xx -= speed * Gdx.graphics.getDeltaTime();
+		if(Gdx.input.isKeyPressed(Keys.W)) yy += speed * Gdx.graphics.getDeltaTime();
+		if(Gdx.input.isKeyPressed(Keys.S)) yy -= speed * Gdx.graphics.getDeltaTime();
 		
 		cooldownTimer += Gdx.graphics.getDeltaTime();
 		if(cooldownTimer >= cooldown) cooldownTimer = cooldown;
@@ -94,9 +92,6 @@ public class Player extends Mob{
 				cooldownTimer -= cooldown;
 			}
 		}
-		
-		if(isSwimming()) MOVE_SPEED = 0.5f;
-		else MOVE_SPEED = 1;
 		
 		move(xx, yy);
 		

@@ -20,6 +20,7 @@ import engine.mobs.Mob;
 import engine.mobs.MobManager;
 import engine.mobs.Player;
 import engine.tiles.Tile;
+import engine.tiles.TileManager;
 import engine.world.WorldManager;
 import engine.world.WorldProperties;
 
