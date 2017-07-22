@@ -80,7 +80,7 @@ public class DebugManager {
 	
 		climate.setText("Climate: \n        Rain: " + climateManager.getRainLevel() + " \n        Wind: " + climateManager.getWindLevel() + 
 				" \n        Fog: " + climateManager.getFogLevel() + " \n        Duration: " + climateManager.getDuration() + 
-				" \n        Temperature: " + climateManager.getTemperature());
+				" \n        Temperature: " + climateManager.getTemperature() + " \n        WaveLevel: " + climateManager.getAmountOfWaves());
 		
 		ambientLight.setText("Ambient light: " + worldManager.getLightManager().getAmbientLigntValue());
 	}

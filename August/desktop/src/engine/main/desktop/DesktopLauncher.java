@@ -8,7 +8,7 @@ public class DesktopLauncher {
 	
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
-	private static final String VERSION = "0.0.2";
+	private static final String VERSION = "0.0.3";
 	
 	private static final boolean V_SYNC = true;
 	

@@ -140,14 +140,24 @@ public class TileManager {
 
 	}
 
-	public void render(SpriteBatch batch) {
+	public void renderStaticTiles(SpriteBatch batch) {
 
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
+				Tile tile = getTile(x, y);
+				if(tile instanceof WaterTile) continue;
 				getTile(x, y).render(batch, x, y, worldManager);
 			}
 		}
+	}
+	
+	public void renderWaterTiles(SpriteBatch batch) {
 
+		for (int y = y0; y < y1; y++) {
+			for (int x = x0; x < x1; x++) {
+				Tile.WATER.render(batch, x, y, worldManager);
+			}
+		}
 	}
 
 	public Tile getTile(int x, int y) {

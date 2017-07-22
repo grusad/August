@@ -34,7 +34,7 @@ public class Textures{
 	public static TextureRegion GRASS[] = TextureSheet.splitSheet(TextureSheet.TILES, 16 * 3, 0, 16 * 3, 16 * 5, false);
 	public static TextureRegion GRASS_DEFAULT = GRASS[13];
 
-	public static TextureRegion WATER_DEFAULT = TextureSheet.TILES.getTextureRegion(1, 1, Tile.SIZE, Tile.SIZE);
+	public static TextureRegion WATER_DEFAULT = TextureSheet.TILES.getTextureRegion(6, 0, Tile.SIZE, Tile.SIZE);
 
 	public static TextureRegion SAND[] = TextureSheet.splitSheet(TextureSheet.TILES, 0, 0, 16 * 3, 16 * 5, false);
 	public static TextureRegion SAND_DEFAULT = SAND[13];

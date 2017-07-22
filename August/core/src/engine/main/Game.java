@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.audio.AudioManager;
@@ -13,6 +14,7 @@ import engine.graphics.CursorProperties;
 import engine.graphics.TextureSheet;
 import engine.gui.GuiManager;
 import engine.menus.MenuManager;
+import engine.shaders.ShaderLoader;
 import engine.utils.DataManager;
 import engine.utils.Input;
 import engine.world.WorldManager;
@@ -26,6 +28,7 @@ public class Game extends ApplicationAdapter {
 	private static GameState State = GameState.MENU_STATE;
 	
 	private SpriteBatch batch;
+	private ShaderLoader shaderLoader;
 	private ShapeRenderer renderer;
 	private WorldManager world;
 	private Camera camera;
@@ -35,8 +38,12 @@ public class Game extends ApplicationAdapter {
 	
 	public void create () {
 		
-		GAME = this;
 		batch = new SpriteBatch();
+		shaderLoader = new ShaderLoader();
+		shaderLoader.loadShaders();
+		
+		GAME = this;
+		
 		renderer = new ShapeRenderer();
 		menuManager = new MenuManager(this);
 		AudioManager.loadMusic();
@@ -116,10 +123,13 @@ public class Game extends ApplicationAdapter {
 		
 		if(GameState.GAME_STATE == State){
 			
-			batch.begin();
-			batch.setProjectionMatrix(camera.getProjectionMatrix());
+			batch.setProjectionMatrix(camera.getProjectionMatrix()); 
 			
-			world.render(batch);
+			batch.begin();
+			
+			world.renderWater(batch, shaderLoader.getWaterShader());
+			world.renderDefault(batch, shaderLoader.getDefaultShader());
+			
 			batch.end();
 			
 			world.getLightManager().getRayHandler().updateAndRender();

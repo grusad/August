@@ -21,6 +21,10 @@ public class ClimateManager {
 	private float duration = 0;
 	private float temperature = 0;
 	
+	private float angleWave;
+	private static float MAX_WAVES = 2.4f;
+	private static float MIN_WAVES = 1.4f;
+	
 	private WorldManager worldManager;
 	
 	public ClimateManager(WorldManager worldManager){
@@ -28,6 +32,8 @@ public class ClimateManager {
 	}
 
 	public void update() {
+		
+		angleWave += Gdx.graphics.getDeltaTime() * 1.5f;
 		
 		duration -= Gdx.graphics.getDeltaTime();
 		
@@ -81,6 +87,20 @@ public class ClimateManager {
 	
 	public float getTemperature(){
 		return temperature;
+	}
+	
+	public float getWavesAngle(){
+		return angleWave;
+	}
+	
+	public float getAmountOfWaves(){
+		
+		float amount = (float) Math.abs(getWindLevel() * 2.7);
+		
+		if(amount <= MIN_WAVES) amount = MIN_WAVES;
+		else if(amount >= MAX_WAVES) amount = MAX_WAVES;
+		
+		return amount;
 	}
 	
 	public void setData(WorldData data){

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import engine.climate.ClimateManager;
 import engine.elements.ElementManager;
@@ -95,9 +96,11 @@ public class WorldManager {
 		
 	}
 	
-	public void render(SpriteBatch batch){
+	public void renderDefault(SpriteBatch batch, ShaderProgram program){
 		
-		tileManager.render(batch);
+		batch.setShader(program);
+		
+		tileManager.renderStaticTiles(batch);
 		
 		for(int i = 0; i < bottomLayerEntities.size(); i++){
 			bottomLayerEntities.get(i).render(batch);
@@ -114,6 +117,18 @@ public class WorldManager {
 		climateManager.render(batch);
 
 	}
+	
+	public void renderWater(SpriteBatch batch, ShaderProgram program){
+		
+		program.begin();
+		program.setUniformf("waveData", climateManager.getWavesAngle(), climateManager.getAmountOfWaves());
+		program.end();
+		batch.setShader(program);
+		tileManager.renderWaterTiles(batch);
+		batch.flush();
+		
+	}
+	
 	
 	private void sortEntityLists(){
 		
