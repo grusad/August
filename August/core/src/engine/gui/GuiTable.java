@@ -11,6 +11,9 @@ public abstract class GuiTable extends Table{
 	
 	protected static Skin skin = SkinLoader.getDefaultSkin();
 	
+	protected final int buttonWidth = 128;
+	protected final int buttonHeight = 32;
+	
 	public GuiTable(GuiManager guiManager){
 		this.guiManager = guiManager;
 		setFillParent(true);

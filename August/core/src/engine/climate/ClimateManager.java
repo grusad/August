@@ -16,7 +16,7 @@ public class ClimateManager {
 	private static Random random = new Random();
 	
 	private float windLevel = 0;
-	private float rainLevel = 1;
+	private float rainLevel = 0;
 	private float fogLevel = 0;
 	private float duration = 0;
 	private float temperature = 0;
@@ -24,6 +24,7 @@ public class ClimateManager {
 	private float angleWave;
 	private static float MAX_WAVES = 2.4f;
 	private static float MIN_WAVES = 1.4f;
+	private static int CHANCE_TO_RAIN = 100;
 	
 	private WorldManager worldManager;
 	
@@ -34,13 +35,15 @@ public class ClimateManager {
 	public void update() {
 		
 		angleWave += Gdx.graphics.getDeltaTime() * 1.5f;
+		while(angleWave > Math.PI * 2)
+			angleWave -= Math.PI * 2;
 		
 		duration -= Gdx.graphics.getDeltaTime();
 		
 		if(duration <= 0){
 			
 			setRandomValues();
-			
+
 		}
 		
 		ParticleManager.spawnParticleEffect(ParticleType.RainParticle, worldManager.getMobManager().getPlayer().getPosition(), 
@@ -55,7 +58,9 @@ public class ClimateManager {
 	public void setRandomValues(){
 		windLevel = getRoundedFloatValue(random.nextFloat());
 		if(random.nextBoolean()) windLevel *= -1;
-		rainLevel = getRoundedFloatValue(random.nextFloat());
+		if(random.nextInt(100) <= CHANCE_TO_RAIN){
+			rainLevel = getRoundedFloatValue(random.nextFloat());
+		}
 		fogLevel = getRoundedFloatValue(random.nextFloat());
 		duration = random.nextInt(120) + 20;
 		temperature = ThreadLocalRandom.current().nextInt(28, 45);

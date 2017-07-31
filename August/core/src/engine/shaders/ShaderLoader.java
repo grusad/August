@@ -1,6 +1,5 @@
 package engine.shaders;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
@@ -13,10 +12,7 @@ public class ShaderLoader {
 		
 		ShaderProgram.pedantic = false;
 		
-		final String vertexShader = new FileHandle("shaders/vertexShader.glsl").readString();
-		final String fragmentShader = new FileHandle("shaders/defaultPixelShader.glsl").readString();
-		
-		waterShader = new ShaderProgram(vertexShader, fragmentShader);
+		waterShader = new WaterShader();
 		defaultShader = SpriteBatch.createDefaultShader();
 		
 	}
@@ -27,6 +23,11 @@ public class ShaderLoader {
 	
 	public ShaderProgram getDefaultShader(){
 		return defaultShader;
+	}
+	
+	public void dispose(){
+		waterShader.dispose();
+		defaultShader.dispose();
 	}
 
 }

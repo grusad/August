@@ -17,6 +17,7 @@ import engine.light.LightManager;
 import engine.main.Game;
 import engine.mobs.MobManager;
 import engine.particles.ParticleManager;
+import engine.shaders.WaterShader;
 import engine.tiles.TileManager;
 import engine.utils.DataManager.PlayerData;
 import engine.utils.DataManager.PreferencesData;
@@ -120,10 +121,12 @@ public class WorldManager {
 	
 	public void renderWater(SpriteBatch batch, ShaderProgram program){
 		
-		program.begin();
-		program.setUniformf("waveData", climateManager.getWavesAngle(), climateManager.getAmountOfWaves());
-		program.end();
-		batch.setShader(program);
+		WaterShader shader = (WaterShader) program;
+		
+		shader.begin();
+		shader.setUniformf(shader.attributeWaveData, climateManager.getWavesAngle(), climateManager.getAmountOfWaves());
+		shader.end();
+		batch.setShader(shader);
 		tileManager.renderWaterTiles(batch);
 		batch.flush();
 		

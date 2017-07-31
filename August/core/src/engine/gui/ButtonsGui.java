@@ -21,15 +21,25 @@ public class ButtonsGui extends GuiTable{
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
+				guiManager.hideAll();
+
 				guiManager.menuGui.setVisible(true);
 			}
 		});
 		
-		Button voidButton = new Button(skin);
+		Button buildButton = new Button(skin);
+		buildButton.addListener(new OverwrittenClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
+				guiManager.hideAll();
+				guiManager.buildGui.setVisible(true);
+			}
+		});
 		
 		
-		add(menuButton).width(32).height(32).pad(8).row();
-		add(voidButton).width(32).height(32).pad(8).row();
+		add(menuButton).width(buttonHeight).height(buttonHeight).pad(8).row();
+		add(buildButton).width(buttonHeight).height(buttonHeight).pad(8).row();
 		
 	}
 

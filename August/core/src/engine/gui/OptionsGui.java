@@ -72,8 +72,8 @@ public class OptionsGui extends GuiTable{
 		table.add(debugCheckBox).row();
 		table.add(fullScreenLabel);
 		table.add(fullScreenCheckBox).row();
-		table.add(applyButton).width(128).height(32).pad(8);
-		table.add(backButton).width(128).height(32).pad(8).row();
+		table.add(applyButton).width(buttonWidth).height(buttonHeight).pad(8);
+		table.add(backButton).width(buttonWidth).height(buttonHeight).pad(8).row();
 		
 		add(table);
 	}

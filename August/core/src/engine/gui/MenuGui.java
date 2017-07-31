@@ -80,10 +80,10 @@ public class MenuGui extends GuiTable{
 		dialog.button("No", "notConfirmed");
 		
 		
-		table.add(saveButton).width(128).height(32).pad(8).row();
-		table.add(backButton).width(128).height(32).pad(8).row();
-		table.add(optionsButton).width(128).height(32).pad(8).row();
-		table.add(exitButton).width(128).height(32).pad(8).row();
+		table.add(saveButton).width(buttonWidth).height(buttonHeight).pad(8).row();
+		table.add(backButton).width(buttonWidth).height(buttonHeight).pad(8).row();
+		table.add(optionsButton).width(buttonWidth).height(buttonHeight).pad(8).row();
+		table.add(exitButton).width(buttonWidth).height(buttonHeight).pad(8).row();
 		
 		add(table);
 

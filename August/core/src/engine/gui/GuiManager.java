@@ -3,6 +3,7 @@ package engine.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -18,6 +19,7 @@ public class GuiManager {
 	public MenuGui menuGui;
 	public OptionsGui optionsGui;
 	public StatusGui statusGui;
+	public BuildGui buildGui;
 	
 	public GuiManager(Game game){
 		
@@ -31,13 +33,16 @@ public class GuiManager {
 		menuGui = new MenuGui(this);
 		optionsGui = new OptionsGui(this);
 		statusGui = new StatusGui(this);
+		buildGui = new BuildGui(this);
 		
 		stage.addActor(menuGui);
 		stage.addActor(buttonsGui);
 		stage.addActor(optionsGui);
 		stage.addActor(statusGui);
+		stage.addActor(buildGui);
 		
 		menuGui.setVisible(false);
+		buildGui.setVisible(false);
 		optionsGui.setVisible(false);
 		
 		stage.setDebugAll(false);
@@ -46,18 +51,31 @@ public class GuiManager {
 	
 	public void update(){
 		
-		if(menuGui.isVisible() || optionsGui.isVisible()) Game.PAUSE = true;
+		if(menuGui.isVisible() || optionsGui.isVisible() || buildGui.isVisible()) Game.PAUSE = true;
 		else Game.PAUSE = false;
 		
 		if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)){
-			if(optionsGui.isVisible()) optionsGui.setVisible(false);
-			if(menuGui.isVisible()) menuGui.setVisible(false);
-			else menuGui.setVisible(true);			
+			
+			if(buildGui.isVisible()){
+				buildGui.setVisible(false);
+			}
+			else{
+				if(optionsGui.isVisible()) optionsGui.setVisible(false);
+				if(menuGui.isVisible()) menuGui.setVisible(false);
+				else menuGui.setVisible(true);
+			}
+						
 		}
 			
 		
 		stage.act();
 		statusGui.udpateComponents();
+	}
+	
+	public void hideAll(){
+		buildGui.setVisible(false);
+		optionsGui.setVisible(false);
+		menuGui.setVisible(false);
 	}
 	
 	public void render(SpriteBatch batch){

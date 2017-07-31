@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import engine.audio.AudioManager;
@@ -191,6 +190,7 @@ public class Game extends ApplicationAdapter {
 	
 	public void dispose () {
 		
+		shaderLoader.dispose();
 		if(world != null) world.cleanUp();
 		if(debugManager != null) debugManager.dispose();
 		TextureSheet.disposeAll();
