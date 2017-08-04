@@ -7,29 +7,25 @@ import com.badlogic.gdx.math.Vector2;
 
 import engine.audio.AudioManager;
 import engine.elements.ElementReader.ElementData;
-import engine.entities.Entity;
+import engine.entities.InteractableEntity;
 import engine.graphics.TextureSheet;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
 import engine.tiles.Tile;
 import engine.utils.Box;
 
-public class Element extends Entity{
-
-	private float transparency = 1f;
+public abstract class Element extends InteractableEntity{
+	
+	protected TextureRegion region;
 	
 	private float maxHP;
 	private float currentHP;
 	private boolean renderHP;
 	
-	protected TextureRegion region;
-	
 	protected int xOffset = 0;
 	protected int yOffset = 0;
 	private int hitBoxWidth;
 	private int hitBoxHeight;
-	private boolean isMinable;
-	private boolean isSolid;
 
 	private int id;
 	
@@ -37,8 +33,10 @@ public class Element extends Entity{
 		super(position);
 		this.id = id;
 		setData(data);
-		this.region = region;	
+		this.region = region;
 	}
+	
+	protected abstract void dropResource();
 	
 	private void setData(ElementData data){
 		this.xOffset = data.textureXOffset;
@@ -51,12 +49,18 @@ public class Element extends Entity{
 		this.maxHP = this.currentHP = data.hp;
 	}
 	
-	public void update(){ 
+	public void update(){
+		
+		super.update();
+		
+		if(isInteracting) renderHP = true;
+		else renderHP = false;
 		
 		if(currentHP <= 0){
 			worldManager.getElementManager().removeElement(this);
 			AudioManager.playSound(AudioManager.getSound("button"), 0.5f);
 			ParticleManager.spawnParticleEffect(ParticleType.MineParticle, getHitBoxCenterPos(), 100);
+			this.dropResource();
 		} 
 		
 	}
@@ -104,11 +108,6 @@ public class Element extends Entity{
 		currentHP -= dmg;
 	}
 	
-	public void resetElement(){
-		transparency = 1;
-		renderHP = false;
-	}
-	
 	/** Returns the world coordinates for the element.*/
 	public Vector2 getPosition(){
 		return new Vector2(position.x * Tile.SIZE, position.y * Tile.SIZE);
@@ -118,22 +117,12 @@ public class Element extends Entity{
 	public Vector2 getTilePosition(){
 		return position;
 	}
-	
-	public void setTransparency(float value){
-		this.transparency = value;
-	}
+
 	
 	public void setRenderHP(boolean bool){
 		this.renderHP = bool;
 	}
 	
-	public boolean isSolid(){
-		return isSolid;
-	} 
-	
-	public boolean isMinable(){
-		return isMinable;
-	}
 	
 	public int getWidth(){
 		return region.getRegionWidth();

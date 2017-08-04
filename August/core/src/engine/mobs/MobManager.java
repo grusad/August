@@ -23,7 +23,10 @@ public class MobManager {
 	}
 	
 	public void update(){
-		for(int i = 0; i < mobs.size(); i++) mobs.get(i).update();
+		for(int i = 0; i < mobs.size(); i++){
+			if(mobs.get(i) instanceof Player) continue;
+			mobs.get(i).update();
+		}
 	}
 	
 	public void spawnPlayerAtRandomIsland(){

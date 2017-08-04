@@ -13,6 +13,7 @@ public class WorldProperties {
 		
 		if(TIME >= 2) TIME_SPEED = -TIME_SPEED;
 		if(TIME <= -1) TIME_SPEED = (TIME_SPEED * -1);
+		
 		TIME += TIME_SPEED * Gdx.graphics.getDeltaTime();
 	}
 	
@@ -20,6 +21,4 @@ public class WorldProperties {
 		TIME = data.time;
 		TIME_SPEED = data.timeSpeed;
 	}
-	
-
 }

@@ -9,18 +9,21 @@ import com.badlogic.gdx.math.Vector2;
 import engine.audio.AudioManager;
 import engine.debug.DebugManager;
 import engine.elements.Element;
+import engine.entities.Entity;
+import engine.entities.InteractableEntity;
 import engine.graphics.Animation;
 import engine.graphics.Textures;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
+import engine.resources.Resource;
+import engine.tiles.Tile;
 import engine.utils.Box;
 import engine.utils.DataManager.PlayerData;
 import engine.utils.Input;
-import engine.utils.ValueBouncer;
 
 public class Player extends Mob{
 	
-	private static float HIT_DMG = 1;
+	private static float HIT_DMG = 20;
 	private static float DEBUG_SPEED = 64 * 5;
 	private static float MOVE_SPEED = 64;
 	private static float SWIM_SPEED = 32;
@@ -36,8 +39,9 @@ public class Player extends Mob{
 	private float cooldown = .25f;
 	private float cooldownTimer = 0;
 	
-	private Element selectedElement = null;
-	private ValueBouncer valueBouncer = null;
+	private static boolean LOCK_AT_SELECTED = false;
+	
+	private InteractableEntity selectedEntity = null;
 
 	public Player(Vector2 position) {
 		super(position);
@@ -45,7 +49,6 @@ public class Player extends Mob{
 
 	@Override
 	public void update() {
-		
 		
 		super.update();
 
@@ -84,62 +87,115 @@ public class Player extends Mob{
 		cooldownTimer += Gdx.graphics.getDeltaTime();
 		if(cooldownTimer >= cooldown) cooldownTimer = cooldown;
 		
-		selectElement();
-	
-		if(Gdx.input.isTouched()){
-			if(cooldownTimer == cooldown){
-				hit();
-				cooldownTimer -= cooldown;
-			}
-		}
+		selectEntity();
+		updateSelectedEntity();
 		
 		move(xx, yy);
 		
 	}
 	
-	private void selectElement(){
+	private void updateSelectedEntity(){
 		
-		//Checks if the aimbox is not intersecting with the selectedElements hitbox. if its not, make selectedElement to null.
-		if(selectedElement != null){
+		Box box = getAimBox();
+		
+		if(selectedEntity != null){
 			
-			 if(selectedElement.getCurrentHP() <= 0){
-				 selectedElement = null;
-				 return;
-			 }
-			
-			selectedElement.setTransparency(valueBouncer.updateAndReturnValue());
-			
-			if(!getAimBox().intersects(selectedElement.getHitBox())){
-				selectedElement.resetElement();
-				selectedElement = null;
-			}else{
+			if(selectedEntity instanceof Element){
+				Element element = (Element) selectedEntity;
+				if(element.getCurrentHP() <= 0){
+					selectedEntity = null;
+					return;
+				}
+				
+				if(Gdx.input.isTouched()){
+					if(cooldownTimer == cooldown){
+						if(selectedEntity instanceof Element){
+							mineElement(element);
+						}
+						cooldownTimer -= cooldown;
+					}
+				}
+				
 				return;
 			}
 			
+			if(selectedEntity instanceof Resource){
+				
+				Resource resource = (Resource) selectedEntity;
+				
+				if(Gdx.input.isTouched()){
+					
+					LOCK_AT_SELECTED = true;
+					
+					resource.getPosition().x = box.getX() - resource.getHitBox().width / 2;
+					resource.getPosition().y = box.getY() - resource.getHitBox().height / 2;
+					
+				}
+				else{
+					if(!canDropSelectedEntity()){
+						selectedEntity.getPosition().x = getCenteredHitBox().x;
+						selectedEntity.getPosition().y = getCenteredHitBox().y;
+					}
+					LOCK_AT_SELECTED = false;
+				}
+				
+				return;
+				
+			}
+		}
+		
+	}
+
+	private void selectEntity() {
+		
+		if(LOCK_AT_SELECTED) return;
+		
+		if(selectedEntity != null){
+			
+			if(!getAimBox().intersects(selectedEntity.getHitBox())){
+				selectedEntity.stopInteract();
+				selectedEntity = null;
+			}else{
+				return;
+			}
 		}
 		
 		Box hitBox = getAimBox();
-		List<Element> elements = worldManager.getElementManager().getElementsOnScreen();
+		List<InteractableEntity> interactableEntities = worldManager.getAllInteractableEntities();
 		
-		for(int i = 0; i < elements.size(); i++){
-			Element element = elements.get(i);
-			if(element.isMinable()){
-				if(hitBox.intersects(element.getHitBox())){
-					selectedElement = element;
-					selectedElement.setRenderHP(true);
-					valueBouncer = new ValueBouncer(0.5f, 1, 1, 1.5f, false);
-					return;
-				}
+		for(int i = 0; i < interactableEntities.size(); i++){
+			InteractableEntity entity = interactableEntities.get(i);
+			
+			if(hitBox.intersects(entity.getHitBox())){
+				selectedEntity = entity;
+				entity.startInteract();
 			}
 		}
+		
 	}
 
-	private void hit(){
-		if(selectedElement != null){
-			selectedElement.mine(HIT_DMG);
-			ParticleManager.spawnParticleEffect(ParticleType.MineParticle, getAimBox().getPosition(), 10);
-			AudioManager.playSound(AudioManager.getSound("mine"));
+	private void mineElement(Element element){
+		element.mine(HIT_DMG);
+		ParticleManager.spawnParticleEffect(ParticleType.MineParticle, getAimBox().getPosition(), 10);
+		AudioManager.playSound(AudioManager.getSound("mine"));
+		
+	}
+	
+	private boolean canDropSelectedEntity(){
+		List<Entity> entities = worldManager.getAllEntitiesInScene();
+		
+		for(int i = 0; i < entities.size(); i++){
+			Entity entity = entities.get(i);
+			if(!entity.isSolid() || entity.equals(selectedEntity)) continue;
+			if(selectedEntity.getHitBox().intersects(entity.getHitBox())) return false;
 		}
+		
+		Tile tile = worldManager.getTileManager().getTile((int)selectedEntity.getPosition().x / Tile.SIZE, 
+				(int) selectedEntity.getPosition().y / Tile.SIZE);
+		
+		if(tile.getID() == Tile.WATER.getID()) return false;
+		
+		return true;
 	}
 	
 	@Override
@@ -200,7 +256,7 @@ public class Player extends Mob{
 			y += -Math.sin(angle) * AIM_LENGTH;
 		}
 		
-		return new Box(new Vector2(x - 1, y - 1), 3, 3);
+		return new Box(new Vector2(x - 1, y - 1), 1, 1);
 	}
 	
 	public PlayerData getData(){

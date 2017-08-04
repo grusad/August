@@ -18,6 +18,8 @@ public class Entity {
 	protected LightManager lightManager;
 	protected Light light;
 	
+	protected boolean isSolid;
+	
 	protected int layerIndex = LayerIndex.DEFAULT;
 	
 	public Entity(Vector2 position){
@@ -34,6 +36,10 @@ public class Entity {
 		
 	public Vector2 getPosition(){
 		return position;
+	}
+	
+	public void setPosition(Vector2 position){
+		this.position = position;
 	}
 	
 	public void setWorldManager(WorldManager worldManager){
@@ -61,6 +67,10 @@ public class Entity {
 	public void setLayerIndex(int layerIndex){
 		this.layerIndex = layerIndex;
 	}
+	
+	public boolean isSolid(){
+		return isSolid;
+	} 
 	
 	public static class LayerIndex{
 		

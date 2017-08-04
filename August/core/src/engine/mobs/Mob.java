@@ -14,8 +14,9 @@ import engine.utils.Psysics;
 
 public abstract class Mob extends Entity{
 	
-	protected TextureRegion region;
 	private Psysics psysics = new Psysics(this);
+	
+	protected TextureRegion region;
 	
 	protected Animation[] animations = new Animation[8];
 	protected Animation[] swimAnimations = new Animation[8];

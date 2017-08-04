@@ -49,6 +49,8 @@ public class Textures{
 	public static TextureRegion STONE_BIG = TextureSheet.ELEMENTS.getTextureRegion(4, 3, 48, 48);
 	public static TextureRegion POTATO_PLANT = TextureSheet.ELEMENTS.getTextureRegion(8, 0, 32, 32);
 	
+	public static TextureRegion PALM_WOOD = TextureSheet.RESOURCES.getTextureRegion(0, 0, 8, 8);
+	
 	public static TextureRegion getRandomRegion(TextureRegion[] regions){
 		return regions[random.nextInt(regions.length)];
 	}

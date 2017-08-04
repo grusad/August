@@ -13,6 +13,7 @@ public class TextureSheet extends Texture {
 	public static final TextureSheet TILES = new TextureSheet("textureSheets/tiles.png", 16, 0);
 	public static final TextureSheet PARTICLES = new TextureSheet("textureSheets/particles.png", 4, 0);
 	public static final TextureSheet BLANK = new TextureSheet("textureSheets/blank.png");
+	public static final TextureSheet RESOURCES = new TextureSheet("textureSheets/resources.png");
 	
 	private static final Random random = new Random();
 
@@ -104,6 +105,7 @@ public class TextureSheet extends Texture {
 		ELEMENTS.dispose();
 		PARTICLES.dispose();
 		BLANK.dispose();
+		RESOURCES.dispose();
 	}
 
 }

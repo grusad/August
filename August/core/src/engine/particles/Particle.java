@@ -10,10 +10,11 @@ import com.badlogic.gdx.math.Vector2;
 import engine.entities.Entity;
 
 public class Particle extends Entity{
+	
+	protected TextureRegion region;
 
 	protected static Random random = new Random();
-	
-	private TextureRegion region;
+
 	protected float lifeSeconds;
 	private float timer = 0;
 	protected float scaleX = 1, scaleY = 1;

@@ -12,11 +12,13 @@ import engine.climate.ClimateManager;
 import engine.elements.ElementManager;
 import engine.entities.Entity;
 import engine.entities.Entity.LayerIndex;
+import engine.entities.InteractableEntity;
 import engine.graphics.Camera;
 import engine.light.LightManager;
 import engine.main.Game;
 import engine.mobs.MobManager;
 import engine.particles.ParticleManager;
+import engine.resources.ResourceManager;
 import engine.shaders.WaterShader;
 import engine.tiles.TileManager;
 import engine.utils.DataManager.PlayerData;
@@ -32,6 +34,7 @@ public class WorldManager {
 	private static final int width = 1024;
 	private static final int height = 1024;
 	
+	private static final List<InteractableEntity> interactableEntities = new ArrayList<>(); 
 	private static final List<Entity> entities = new ArrayList<>();
 	private static final List<Entity> topLayerEntities = new ArrayList<>();
 	private static final List<Entity> bottomLayerEntities = new ArrayList<>();
@@ -84,14 +87,18 @@ public class WorldManager {
 		tileManager.update(camera);
 		elementManager.update(camera);
 		mobManager.update();
-		ParticleManager.update();
 		climateManager.update();
+		ParticleManager.update();
+		ResourceManager.update();
 		
 		entities.addAll(elementManager.getElementsOnScreen());
 		entities.addAll(mobManager.getMobs());
 		entities.addAll(ParticleManager.particles);
+		entities.addAll(ResourceManager.resources);
 		
 		sortEntityLists();
+		
+		mobManager.getPlayer().update();
 		
 		Collections.sort(entities, Utils.positionSorter);
 		
@@ -139,6 +146,10 @@ public class WorldManager {
 		while(e.hasNext()){
 			Entity entity = e.next();
 			
+			if(entity instanceof InteractableEntity){
+				interactableEntities.add( (InteractableEntity) entity);
+			}
+			
 			if(entity.getLayerIndex() == LayerIndex.BOTTOM){
 				bottomLayerEntities.add(entity);
 				e.remove();
@@ -148,13 +159,13 @@ public class WorldManager {
 				e.remove();
 			}
 		}
-		
 	}
 	
 	private void clearEntityLists(){
 		entities.clear();
 		bottomLayerEntities.clear();
 		topLayerEntities.clear();
+		interactableEntities.clear();
 	}
 
 	public int getHeight(){
@@ -189,11 +200,20 @@ public class WorldManager {
 		return climateManager;
 	}
 	
+	public List<InteractableEntity> getAllInteractableEntities(){
+		return interactableEntities;
+	}
+	
+	public List<Entity> getAllEntitiesInScene(){
+		return entities;
+	}
+	
 	/** Clean up all lists with entities and disposes all the resources.*/
 	public void cleanUp(){
 		clearEntityLists();
 		elementManager.getAllElements().clear();
 		ParticleManager.particles.clear();
+		ResourceManager.resources.clear();
 		
 		if(lightManager != null){
 			lightManager.dispose();

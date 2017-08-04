@@ -138,5 +138,12 @@ public class Box {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+	
+	public Vector2 getCenterPos(){
+		Vector2 vector = new Vector2();
+		vector.x = x + width / 2;
+		vector.y = y + height / 2;
+		return vector;
+	}
 
 }

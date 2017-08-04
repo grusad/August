@@ -8,8 +8,7 @@ precision mediump float;
 varying LOWP vec4 vColor;
 varying vec2 vTexCoord;
 
-//our texture samplers
-uniform sampler2D u_texture; //diffuse map
+uniform sampler2D u_texture;
 
 void main() {
 	vec4 DiffuseColor = texture2D(u_texture, vTexCoord);
