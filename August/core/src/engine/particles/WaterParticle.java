@@ -19,8 +19,8 @@ public class WaterParticle extends Particle{
 	public void update() {
 		super.update();
 		
-		position.x += xx * 0.05f;
-		position.y += yy * 0.5f;
+		getWorldPosition().x += xx * 0.05f;
+		getWorldPosition().y += yy * 0.5f;
 		yy -= 0.05f;
 		
 	}

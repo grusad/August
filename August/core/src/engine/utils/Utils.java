@@ -12,9 +12,9 @@ public class Utils {
 			float y0;
 			float y1;
 			if(e0.getHitBox() != null) y0 = e0.getHitBox().y;
-			else y0 = e0.getPosition().y;
+			else y0 = e0.getWorldPosition().y;
 			if(e1.getHitBox() != null) y1 = e1.getHitBox().y;
-			else y1 = e1.getPosition().y;
+			else y1 = e1.getWorldPosition().y;
 			
 			if(y0 < y1) return 1;
 			if(y0 > y1) return -1;

@@ -6,16 +6,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 import engine.graphics.Camera;
+import engine.tiles.Tile;
 
 public class Input {
 	
+	private static Vector3 tilePos = new Vector3(0, 0, 0);
 	private static Vector3 screenPos = new Vector3(0, 0, 0);
 	private static Vector3 worldPos = new Vector3(0, 0, 0);
 	
 	public static void update(Camera camera){
 		screenPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 		worldPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+		tilePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+		
 		camera.getOrthographicCamera().unproject(worldPos);
+		camera.getOrthographicCamera().unproject(tilePos);
 	}
 	
 	/** Returns whether a button on the keyboard is pressed once.*/
@@ -43,9 +48,21 @@ public class Input {
 		return new Point((int)worldPos.x, (int)worldPos.y);
 	}
 	
+	public static Point getTilePosition(){
+		return new Point((int) worldPos.x / Tile.SIZE, (int) worldPos.y / Tile.SIZE);
+	}
+	
 	/** Returns the point in the gameworld that the mouse is pointing at.*/
 	public static Point getScreenPosition(){
 		return new Point((int)screenPos.x, (int)screenPos.y);
+	}
+	
+	public static int getDeltaX(){
+		return Gdx.input.getDeltaX();
+	}
+	
+	public static int getDeltaY(){
+		return Gdx.input.getDeltaY();
 	}
 
 }

@@ -14,13 +14,15 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import engine.climate.ClimateManager;
 import engine.elements.Element;
 import engine.elements.ElementManager;
+import engine.graphics.Camera;
 import engine.graphics.SkinLoader;
 import engine.main.Game;
 import engine.mobs.Mob;
 import engine.mobs.MobManager;
 import engine.mobs.Player;
+import engine.resources.Resource;
+import engine.resources.ResourceManager;
 import engine.tiles.Tile;
-import engine.tiles.TileManager;
 import engine.world.WorldManager;
 import engine.world.WorldProperties;
 
@@ -29,6 +31,11 @@ public class DebugManager {
 	public static boolean IN_DEBUG_MODE = false;
 	
 	private WorldManager worldManager;
+	
+	private int x0;
+	private int x1;
+	private int y0;
+	private int y1;
 	
 	private Stage stage;
 	private Table table;
@@ -75,18 +82,23 @@ public class DebugManager {
 		ClimateManager climateManager = worldManager.getClimateManager();
 		
 		fps.setText("Fps: " + Gdx.graphics.getFramesPerSecond());
-		position.setText("Position:  x: " + player.getPosition().x + "  y: " + player.getPosition().y);
-		tilePosition.setText("Tile Position:  x: " + (int) player.getPosition().x / Tile.SIZE + "  y: " + (int) player.getPosition().y / Tile.SIZE);
+		position.setText("Position:  x: " + player.getWorldPosition().x + "  y: " + player.getWorldPosition().y);
+		tilePosition.setText("Tile Position:  x: " + (int) player.getWorldPosition().x / Tile.SIZE + "  y: " + (int) player.getWorldPosition().y / Tile.SIZE);
 		time.setText("Time: " + WorldProperties.TIME);
 	
 		climate.setText("Climate: \n        Rain: " + climateManager.getRainLevel() + " \n        Wind: " + climateManager.getWindLevel() + 
 				" \n        Fog: " + climateManager.getFogLevel() + " \n        Duration: " + climateManager.getDuration() + 
-				" \n        Temperature: " + climateManager.getTemperature() + " \n        WaveLevel: " + climateManager.getAmountOfWaves());
+				" \n        WaveLevel: " + climateManager.getAmountOfWaves());
 		
 		ambientLight.setText("Ambient light: " + worldManager.getLightManager().getAmbientLigntValue());
 	}
 	
-	public void update(){
+	public void update(Camera camera){
+		
+		x0 = (int) (camera.getPosition().x - camera.getWidth() / 2) / Tile.SIZE - 5;
+		x1 = (int) (x0 + (camera.getWidth()) / Tile.SIZE) + 9;
+		y0 = (int) (camera.getPosition().y - camera.getHeight() / 2) / Tile.SIZE - 5;
+		y1 = (int) (y0 + (camera.getHeight()) / Tile.SIZE) + 7;
 		
 		updateStageComponents();
 		
@@ -94,6 +106,13 @@ public class DebugManager {
 	}
 	
 	public void render(ShapeRenderer renderer){
+		
+		for (int y = y0; y <= y1; y++) {
+			for (int x = x0; x <= x1; x++) {
+				renderer.setColor(Color.BLACK);
+				renderer.rect(x * Tile.SIZE, y * Tile.SIZE, Tile.SIZE, Tile.SIZE);
+			}
+		}
 		
 		MobManager mobManager = worldManager.getMobManager();
 		ElementManager elementManager = worldManager.getElementManager();
@@ -115,8 +134,12 @@ public class DebugManager {
 			Element element = elementManager.getElementsOnScreen().get(i);
 			renderer.setColor(Color.WHITE);
 			renderer.rect(element.getHitBox().getX(), element.getHitBox().getY(), element.getHitBox().getWidth(), element.getHitBox().getHeight());
-			renderer.setColor(Color.GREEN);
-			renderer.rect(element.getTextureBounds().getX(), element.getTextureBounds().getY(), element.getTextureBounds().getWidth(), element.getTextureBounds().getHeight());
+		}
+		
+		for(int i = 0; i < ResourceManager.resourcesOnScreen.size(); i++){
+			Resource r = ResourceManager.resourcesOnScreen.get(i);
+			renderer.setColor(Color.WHITE);
+			renderer.rect(r.getHitBox().getX(), r.getHitBox().getY(), r.getHitBox().getWidth(), r.getHitBox().getHeight());
 		}
 		
 	}

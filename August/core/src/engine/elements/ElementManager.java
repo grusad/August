@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.math.Vector2;
-
 import engine.elements.Elements.PalmTree;
 import engine.elements.Elements.PalmTreeSmall;
 import engine.elements.Elements.PinkTree01;
@@ -21,6 +19,7 @@ import engine.entities.Entity;
 import engine.graphics.Camera;
 import engine.tiles.Tile;
 import engine.tiles.TileManager;
+import engine.utils.Vector2i;
 import engine.world.WorldManager;
 
 public class ElementManager {
@@ -38,10 +37,8 @@ public class ElementManager {
 	private int y0;
 	private int y1;
 	
-	
-	private static Map<Vector2, Element> elements = new HashMap<>();
+	private static Map<Integer, Element> elements = new HashMap<>();
 	private static List<Element> elementsOnScreen = new ArrayList<>();
-
 	
 	private WorldManager worldManager;
 	
@@ -54,7 +51,7 @@ public class ElementManager {
 		for(int y = 0; y < worldManager.getWidth(); y++){
 			for(int x = 0; x < worldManager.getWidth(); x++){
 				if(elements[x + y * worldManager.getWidth()] == 0) continue;
-				addElementByID(elements[x + y * worldManager.getWidth()], new Vector2(x, y));
+				addElementByID(elements[x + y * worldManager.getWidth()], new Vector2i(x, y));
 			}
 		}
 	}
@@ -79,7 +76,7 @@ public class ElementManager {
 				
 				else continue;
 				
-				addElementByID(ID, new Vector2(x, y));
+				addElementByID(ID, new Vector2i(x, y));
 			}
 		}
 	}
@@ -97,18 +94,17 @@ public class ElementManager {
 	}
 	
 	/** Make sure to add Elements!!*/
-	public void addElementByID(int ID, Vector2 position){
+	public void addElementByID(int ID, Vector2i tiledPosition){
 		
-		if(ID == PalmTree.ID) addElement(new PalmTree(position));
-		if(ID == PalmTreeSmall.ID) addElement(new PalmTreeSmall(position));
-		if(ID == PinkTree01.ID) addElement(new PinkTree01(position));
-		if(ID == PinkTree02.ID) addElement(new PinkTree02(position));
-		if(ID == StoneSmallSingle.ID) addElement(new StoneSmallSingle(position));
-		if(ID == StoneSmallDouble.ID) addElement(new StoneSmallDouble(position));
-		if(ID == StoneMedium.ID) addElement(new StoneMedium(position));
-		if(ID == StoneBig.ID) addElement(new StoneBig(position));
-		if(ID == PotatoPlant.ID) addElement(new PotatoPlant(position));
-		
+		if(ID == PalmTree.ID) addElement(new PalmTree(tiledPosition));
+		if(ID == PalmTreeSmall.ID) addElement(new PalmTreeSmall(tiledPosition));
+		if(ID == PinkTree01.ID) addElement(new PinkTree01(tiledPosition));
+		if(ID == PinkTree02.ID) addElement(new PinkTree02(tiledPosition));
+		if(ID == StoneSmallSingle.ID) addElement(new StoneSmallSingle(tiledPosition));
+		if(ID == StoneSmallDouble.ID) addElement(new StoneSmallDouble(tiledPosition));
+		if(ID == StoneMedium.ID) addElement(new StoneMedium(tiledPosition));
+		if(ID == StoneBig.ID) addElement(new StoneBig(tiledPosition));
+		if(ID == PotatoPlant.ID) addElement(new PotatoPlant(tiledPosition));
 		
 	}
 	
@@ -116,14 +112,15 @@ public class ElementManager {
 		entity.setWorldManager(worldManager);
 		entity.setLightManager(worldManager.getLightManager());
 		Element element = (Element) entity;
-		elements.put(element.getTilePosition(), (Element) entity);
+		elements.put(getInteger(element.getTiledPosition()), element);
 	}
 	
 	public void removeElement(Element element){
-		elements.remove(element.getTilePosition());
+		elements.remove(getInteger(element.getTiledPosition()));
 	}
 	
 	public void update(Camera camera){
+		
 		
 		elementsOnScreen.clear();
 		
@@ -134,28 +131,34 @@ public class ElementManager {
 		
 		for (int y = y0; y <= y1; y++) {
 			for (int x = x0; x <= x1; x++) {
-				Element element = getElement(new Vector2(x, y));
+				Element element = getElement(new Vector2i(x, y));
 				if(element == null) continue;
 				elementsOnScreen.add(element);
 				element.update();
 			}
 		}
+		
 	}
 	
-	public Element getElement(Vector2 position){
-		return elements.get(position);
+	public Element getElement(Vector2i tiledPosition){
+		return elements.get(getInteger(tiledPosition));
+		
 	}
 	
 	public Element getElement(int x, int y){
-		return getElement(new Vector2(x, y));
+		return getElement(new Vector2i(x, y));
 	}
 	
 	public List<Element> getElementsOnScreen(){
 		return elementsOnScreen;
 	}
 	
-	public Map<Vector2, Element> getAllElements(){
+	public Map<Integer, Element> getAllElements(){
 		return elements;
+	}
+	
+	private int getInteger(Vector2i vector){
+		return new Integer(vector.x + vector.y * worldManager.getWidth());
 	}
 	
 	public int[] writeElementsToIntArray(){

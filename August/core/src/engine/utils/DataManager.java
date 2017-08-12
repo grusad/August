@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Json;
 
 import engine.climate.ClimateManager;
 import engine.main.Game;
+import engine.resources.ResourceManager;
 import engine.world.WorldProperties;
 
 public class DataManager {
@@ -98,11 +99,11 @@ public class DataManager {
 		data.time = WorldProperties.TIME;
 		data.timeSpeed = WorldProperties.TIME_SPEED;
 		ClimateManager climateManager = game.getWorldManager().getClimateManager();
-		data.temperature = climateManager.getTemperature(); 
 		data.cliamateDuration = climateManager.getDuration();
 		data.fogLevel = climateManager.getFogLevel();
 		data.rainLevel = climateManager.getRainLevel();
 		data.windLevel = climateManager.getWindLevel();
+		data.resource = ResourceManager.writeResourcesToData();
 		
 		return data;
 	}
@@ -120,13 +121,19 @@ public class DataManager {
 		
 		public int[] tiles;
 		public int[] elements;
+		public ResourceData[] resource;
 		public float time, timeSpeed;
-		public float temperature;
 		public float windLevel;
 		public float fogLevel;
 		public float rainLevel;
 		public float cliamateDuration;
 		
+	}
+	
+	public static class ResourceData{
+		public int id;
+		public int x;
+		public int y;
 	}
 	
 	public static class PlayerData{
@@ -136,8 +143,6 @@ public class DataManager {
 		public float moveSpeed;
 		public float aimLength;
 		public float health;
-		public float stamina;
-		public float bodyTemp;
 		public float hunger;
 		public float thirst;
 		

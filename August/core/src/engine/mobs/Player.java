@@ -1,5 +1,6 @@
 package engine.mobs;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -16,10 +17,14 @@ import engine.graphics.Textures;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
 import engine.resources.Resource;
+import engine.resources.ResourceManager;
+import engine.resources.Resources.PalmWood;
+import engine.resources.Resources.Rock;
 import engine.tiles.Tile;
 import engine.utils.Box;
 import engine.utils.DataManager.PlayerData;
 import engine.utils.Input;
+import engine.utils.Vector2i;
 
 public class Player extends Mob{
 	
@@ -30,8 +35,6 @@ public class Player extends Mob{
 	private static float AIM_LENGTH = 30;
 	
 	public static float HEALTH = 100;
-	public static float STAMINA = 100;
-	public static float BODY_TEMP = 36;
 	public static float HUNGER = 100;
 	public static float THIRST = 100;
 	
@@ -50,7 +53,17 @@ public class Player extends Mob{
 	@Override
 	public void update() {
 		
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)){
+			ResourceManager.addResource(new PalmWood(new Vector2i(Input.getTilePosition().x, Input.getTilePosition().y)));
+		}
+		
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){
+			ResourceManager.addResource(new Rock(new Vector2i(Input.getTilePosition().x, Input.getTilePosition().y)));
+		}
+		
 		super.update();
+		
+		updateStatus();
 
 		float x0 = Gdx.graphics.getWidth() / 2;
 		float x1 = Input.getScreenPosition().x;
@@ -75,9 +88,10 @@ public class Player extends Mob{
 		
 		float speed = MOVE_SPEED;
 		
-		if(isSwimming()) speed = SWIM_SPEED;
+		if(isInWater()) speed = SWIM_SPEED;
 		
 		if(DebugManager.IN_DEBUG_MODE && Gdx.input.isKeyPressed(Keys.SPACE)) speed = DEBUG_SPEED;
+		if(Gdx.input.isKeyJustPressed(Keys.R)) resetStatus();
 		
 		if(Gdx.input.isKeyPressed(Keys.D)) xx += speed * Gdx.graphics.getDeltaTime();
 		if(Gdx.input.isKeyPressed(Keys.A)) xx -= speed * Gdx.graphics.getDeltaTime();
@@ -92,6 +106,28 @@ public class Player extends Mob{
 		
 		move(xx, yy);
 		
+	}
+	
+	private void resetStatus(){
+		HEALTH = 100;
+		HUNGER = 100;
+		THIRST = 100;
+	}
+	
+	private void updateStatus(){
+		
+		float healthDrain = 0;
+		float hungerDrain = 0.1f;
+		float thirstDrain = 0.3f;
+		
+		healthDrain += (100 - HUNGER) * 0.001f;
+		healthDrain += (100 - THIRST) * 0.001f;
+		
+		float delta = Gdx.graphics.getDeltaTime();
+		HEALTH -= healthDrain * delta;
+		HUNGER -= hungerDrain * delta;
+		THIRST -= thirstDrain * delta;
+
 	}
 	
 	private void updateSelectedEntity(){
@@ -120,27 +156,52 @@ public class Player extends Mob{
 			}
 			
 			if(selectedEntity instanceof Resource){
-				
 				Resource resource = (Resource) selectedEntity;
-				
+
 				if(Gdx.input.isTouched()){
 					
 					LOCK_AT_SELECTED = true;
 					
-					resource.getPosition().x = box.getX() - resource.getHitBox().width / 2;
-					resource.getPosition().y = box.getY() - resource.getHitBox().height / 2;
+					Vector2i pos = new Vector2i(resource.getTiledPosition().x, resource.getTiledPosition().y);
+					
+					pos.x = Input.getTilePosition().x;
+					pos.y = Input.getTilePosition().y;
+					
+					
+					resource.moveToTile(pos);
 					
 				}
-				else{
-					if(!canDropSelectedEntity()){
-						selectedEntity.getPosition().x = getCenteredHitBox().x;
-						selectedEntity.getPosition().y = getCenteredHitBox().y;
-					}
+				else if(LOCK_AT_SELECTED){
+					
+					dropLockedEntity(selectedEntity);
 					LOCK_AT_SELECTED = false;
 				}
 				
 				return;
 				
+			}
+		}
+		
+	}
+	
+	public void dropLockedEntity(InteractableEntity entity){
+		
+		Tile tile = worldManager.getTileManager().getTile(entity.getTiledPosition().x, entity.getTiledPosition().y);
+		if(tile.isSwimmable()){
+			ResourceManager.removeResource((Resource) entity);
+			ParticleManager.spawnParticleEffect(ParticleType.WaterParticle, entity.getHitBoxCenterPos(), 100);
+			return;
+		}
+		
+		List<Entity> entities = worldManager.getAllEntitiesInScene();
+		
+		for(Entity e : entities){
+			if(e instanceof Player) continue;
+			if(e.isSolid()){
+				if(e.getHitBox().intersects(selectedEntity.getHitBox())){
+					System.out.println("Droped selected Entity in incorrect area.");
+					return;
+				}
 			}
 		}
 		
@@ -162,6 +223,7 @@ public class Player extends Mob{
 		
 		Box hitBox = getAimBox();
 		List<InteractableEntity> interactableEntities = worldManager.getAllInteractableEntities();
+		Collections.reverse(interactableEntities);
 		
 		for(int i = 0; i < interactableEntities.size(); i++){
 			InteractableEntity entity = interactableEntities.get(i);
@@ -169,6 +231,7 @@ public class Player extends Mob{
 			if(hitBox.intersects(entity.getHitBox())){
 				selectedEntity = entity;
 				entity.startInteract();
+				return;
 			}
 		}
 		
@@ -179,23 +242,6 @@ public class Player extends Mob{
 		ParticleManager.spawnParticleEffect(ParticleType.MineParticle, getAimBox().getPosition(), 10);
 		AudioManager.playSound(AudioManager.getSound("mine"));
 		
-	}
-	
-	private boolean canDropSelectedEntity(){
-		List<Entity> entities = worldManager.getAllEntitiesInScene();
-		
-		for(int i = 0; i < entities.size(); i++){
-			Entity entity = entities.get(i);
-			if(!entity.isSolid() || entity.equals(selectedEntity)) continue;
-			if(selectedEntity.getHitBox().intersects(entity.getHitBox())) return false;
-		}
-		
-		Tile tile = worldManager.getTileManager().getTile((int)selectedEntity.getPosition().x / Tile.SIZE, 
-				(int) selectedEntity.getPosition().y / Tile.SIZE);
-		
-		if(tile.getID() == Tile.WATER.getID()) return false;
-		
-		return true;
 	}
 	
 	@Override
@@ -223,7 +269,7 @@ public class Player extends Mob{
 
 	@Override
 	public Box getHitBox() {
-		return new Box(new Vector2(position.x + 11, position.y + 4), getStaticWidth() - 23, getStaticHeight() / 2 - 12);
+		return new Box(new Vector2(getWorldPosition().x + 11, getWorldPosition().y + 4), getStaticWidth() - 23, getStaticHeight() / 2 - 12);
 	}
 	
 	public Box getAimBox(){
@@ -262,12 +308,10 @@ public class Player extends Mob{
 	public PlayerData getData(){
 		PlayerData data = new PlayerData();
 		
-		data.x = position.x;
-		data.y = position.y;
+		data.x = getWorldPosition().x;
+		data.y = getWorldPosition().y;
 		data.aimLength = AIM_LENGTH;
-		data.bodyTemp = BODY_TEMP;
 		data.health = HEALTH;
-		data.stamina = STAMINA;
 		data.hunger = HUNGER;
 		data.thirst = THIRST;
 		data.moveSpeed = MOVE_SPEED;
@@ -278,13 +322,11 @@ public class Player extends Mob{
 	
 	public void setData(PlayerData data){
 		
-		this.position.x = data.x;
-		this.position.y = data.y;
+		this.getWorldPosition().x = data.x;
+		this.getWorldPosition().y = data.y;
 		MOVE_SPEED = data.moveSpeed;
 		AIM_LENGTH = data.aimLength;
-		BODY_TEMP = data.bodyTemp;
 		HEALTH = data.health;
-		STAMINA = data.stamina;
 		THIRST = data.thirst;
 		HUNGER = data.hunger;
 	}

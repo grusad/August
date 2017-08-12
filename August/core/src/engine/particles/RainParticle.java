@@ -23,8 +23,8 @@ public class RainParticle extends Particle{
 		
 		super.update();
 		
-		position.x += worldManager.getClimateManager().getWindLevel();
-		position.y -= speed;
+		getWorldPosition().x += worldManager.getClimateManager().getWindLevel() * 10;
+		getWorldPosition().y -= speed;
 		
 	}
 

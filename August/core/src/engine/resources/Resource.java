@@ -2,18 +2,18 @@ package engine.resources;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 
 import engine.entities.InteractableEntity;
-import engine.utils.Box;
+import engine.utils.Vector2i;
 
 public class Resource extends InteractableEntity{
+	
+	private int id;
 
-	protected TextureRegion region;
-
-	public Resource(Vector2 position, TextureRegion region) {
-		super(position);
-		this.region = region;
+	public Resource(Vector2i tiledPosition, TextureRegion region, int id) {
+		super(tiledPosition, region);
+		this.id = id;
+		layerIndex = LayerIndex.BOTTOM;
 	}
 	
 	public void update(){
@@ -21,13 +21,17 @@ public class Resource extends InteractableEntity{
 	}
 	
 	public void render(SpriteBatch batch){
-		batch.setColor(1, 1, 1, transparency);
-		batch.draw(region, position.x, position.y);
-		batch.setColor(1, 1, 1, 1);
+		super.render(batch);
 	}
 	
-	public Box getHitBox(){
-		return new Box(position.x, position.y, region.getRegionWidth(), region.getRegionHeight());
+	public void moveToTile(Vector2i tilePos){
+		ResourceManager.removeResource(this);
+		super.moveToTile(tilePos);
+		ResourceManager.addResource(this);
 	}
-
+	
+	public int getID(){
+		return id;
+	}
+	
 }

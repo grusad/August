@@ -19,8 +19,8 @@ public class MineParticle extends Particle{
 	@Override
 	public void update() {
 		super.update();
-		position.x += xx * 0.5f;
-		position.y += yy * 0.5f;
+		getWorldPosition().x += xx * 0.5f;
+		getWorldPosition().y += yy * 0.5f;
 		yy -= 0.1f;
 		
 	}

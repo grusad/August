@@ -100,7 +100,7 @@ public class Game extends ApplicationAdapter {
 			
 			if(PAUSE) return;
 			
-			if(DebugManager.IN_DEBUG_MODE) debugManager.update();
+			if(DebugManager.IN_DEBUG_MODE) debugManager.update(camera);
 			
 			world.update(camera);
 			camera.update(world.getMobManager().getPlayer());	

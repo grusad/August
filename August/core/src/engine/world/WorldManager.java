@@ -55,6 +55,7 @@ public class WorldManager {
 		mobManager = new MobManager(this);
 		climateManager = new ClimateManager(this);
 		ParticleManager.setWorldManager(this);
+		ResourceManager.setWorldManager(this);
 			
 	}
 	
@@ -74,6 +75,7 @@ public class WorldManager {
 		mobManager.spawnPlayerAtLoadedPosition(playerData);
 		WorldProperties.setProperties(data);
 		climateManager.setData(data);
+		ResourceManager.generateLoadedResources(data.resource);
 		
 	}
 	
@@ -89,12 +91,12 @@ public class WorldManager {
 		mobManager.update();
 		climateManager.update();
 		ParticleManager.update();
-		ResourceManager.update();
+		ResourceManager.update(camera);
 		
 		entities.addAll(elementManager.getElementsOnScreen());
 		entities.addAll(mobManager.getMobs());
 		entities.addAll(ParticleManager.particles);
-		entities.addAll(ResourceManager.resources);
+		entities.addAll(ResourceManager.resourcesOnScreen);
 		
 		sortEntityLists();
 		
@@ -214,6 +216,7 @@ public class WorldManager {
 		elementManager.getAllElements().clear();
 		ParticleManager.particles.clear();
 		ResourceManager.resources.clear();
+		ResourceManager.resourcesOnScreen.clear();
 		
 		if(lightManager != null){
 			lightManager.dispose();

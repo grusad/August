@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import engine.entities.Entity;
 import engine.graphics.Animation;
+import engine.graphics.Textures;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
 import engine.utils.Box;
@@ -27,12 +28,11 @@ public abstract class Mob extends Entity{
 	private int staticHeight;
 	
 	private boolean isWalking = false;
-	private boolean isSwimming = false;
 	
 	protected int direction = 4;
 	
-	public Mob(Vector2 position) {
-		super(position);
+	public Mob(Vector2 worldPosition) {
+		super(worldPosition, Textures.PLAYER_S[0]);
 		setAnimations();
 		
 		this.region = animations[direction].getFrameAt(0);
@@ -61,16 +61,16 @@ public abstract class Mob extends Entity{
 		
 		
 		if(!psysics.collision(xx, 0)){
-			position.x += xx;
+			getWorldPosition().x += xx;
 		}
 		
 		if(!psysics.collision(0, yy)){
-			position.y += yy;
+			getWorldPosition().y += yy;
 		}
 		
-		if(isSwimming && isWalking){
+		if(isInWater() && isWalking){
 			
-			ParticleManager.spawnParticleEffect(ParticleType.WaterParticle, new Vector2(getCenteredPositionCurrent().x, getPosition().y), 2);
+			ParticleManager.spawnParticleEffect(ParticleType.WaterParticle, new Vector2(getCenteredPositionCurrent().x, getWorldPosition().y), 2);
 		}
 		
 	}
@@ -79,11 +79,11 @@ public abstract class Mob extends Entity{
 		
 		if(light != null) light.update(getCenteredPositionCurrent());
 		
-		if(isWalking && !isSwimming){
+		if(isWalking && !isInWater()){
 			animations[direction].update(animationSpeed);
 			this.region = animations[direction].getCurrentFrame();			
 		}
-		else if(isSwimming){
+		else if(isInWater()){
 			this.region = swimAnimations[direction].getCurrentFrame();
 		}
 		else{
@@ -93,7 +93,7 @@ public abstract class Mob extends Entity{
 	}
 	
 	public void render(SpriteBatch batch){
-		batch.draw(region, position.x, position.y);
+		batch.draw(region, getWorldPosition().x, getWorldPosition().y);
 	}
 	
 	public int getWidth(){
@@ -116,22 +116,14 @@ public abstract class Mob extends Entity{
 		return isWalking;
 	}
 	
-	public boolean isSwimming(){
-		return isSwimming;
-	}
-	
-	public void setSwimming(boolean swimming){
-		this.isSwimming = swimming;
-	}
-	
 	/** Gets the centered position with the current width and height.*/
 	public Vector2 getCenteredPositionCurrent(){
-		return new Vector2(position.x + getWidth() / 2, position.y + getHeight() / 2);
+		return new Vector2(getWorldPosition().x + getWidth() / 2, getWorldPosition().y + getHeight() / 2);
 	}
 	
 	/** Gets the centered position with the the static width and height.*/
 	public Vector2 getCenteredPosition(){
-		return new Vector2(position.x + getStaticWidth() / 2, position.y + getStaticHeight() / 2);
+		return new Vector2(getWorldPosition().x + getStaticWidth() / 2, getWorldPosition().y + getStaticHeight() / 2);
 	}
 	
 	public Vector2 getCenteredHitBox(){

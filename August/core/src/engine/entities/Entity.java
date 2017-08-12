@@ -3,27 +3,58 @@ package engine.entities;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import engine.light.Light;
 import engine.light.LightManager;
+import engine.tiles.Tile;
 import engine.utils.Box;
+import engine.utils.Vector2i;
 import engine.world.WorldManager;
 
 public class Entity {
 	
 	protected static Random random = new Random();
-	protected Vector2 position;
+	
+	private Vector2 worldPosition;
+	
 	public WorldManager worldManager;
 	protected LightManager lightManager;
 	protected Light light;
 	
+	protected TextureRegion region;
+	
+	protected int xTextureOffset = 0;
+	protected int yTextureOffset = 0;
+	
+	protected int hitBoxWidth = 0;
+	protected int hitBoxHeight = 0;
+	
+	protected float transparency = 1f;
+	
+	/** Make sure to render in center of tile. */
+	protected int xCenterOffset = 0;
+	protected int yCenterOffset = 0;
+	
 	protected boolean isSolid;
+	private boolean inWater = false;
 	
 	protected int layerIndex = LayerIndex.DEFAULT;
 	
-	public Entity(Vector2 position){
-		this.position = position;
+	public Entity(Vector2 worldPosition, TextureRegion region){
+		this.worldPosition = worldPosition;
+		this.region = region;
+		hitBoxWidth = region.getRegionWidth();
+		hitBoxHeight = region.getRegionHeight();
+	}
+	
+	public Entity(Vector2i tiledPosition, TextureRegion region){
+		this(new Vector2(tiledPosition.getX() * Tile.SIZE, tiledPosition.y * Tile.SIZE), region);
+	}
+	
+	public Box getHitBox(){
+		return new Box(getWorldPosition().x + xCenterOffset, getWorldPosition().y + yCenterOffset, hitBoxWidth, hitBoxHeight);
 	}
 	
 	public void update(){
@@ -32,14 +63,48 @@ public class Entity {
 	
 	public void render(SpriteBatch batch){
 		
+		this.xCenterOffset = Tile.SIZE / 2 - getHitBox().width / 2;
+		this.yCenterOffset = Tile.SIZE / 2 - getHitBox().height / 2;
+		
+		batch.setColor(1, 1, 1, transparency);
+		
+		batch.draw(region, getWorldPosition().x + xCenterOffset- xTextureOffset,
+				getWorldPosition().y + yCenterOffset - yTextureOffset);	
+		
+		batch.setColor(1, 1, 1, 1);
 	}
 		
-	public Vector2 getPosition(){
-		return position;
+	public Vector2 getWorldPosition(){
+		
+		return worldPosition;
 	}
 	
-	public void setPosition(Vector2 position){
-		this.position = position;
+	public Vector2i getTiledPosition(){
+		return new Vector2i((int) worldPosition.x / Tile.SIZE, (int) worldPosition.y / Tile.SIZE);
+	}
+	
+	public void setPosition(Vector2 worldPosition){
+		this.worldPosition = worldPosition;
+	}
+	
+	public void setPosition(Vector2i tiledPosition){
+		this.worldPosition.x = tiledPosition.x * Tile.SIZE;
+		this.worldPosition.y = tiledPosition.y * Tile.SIZE;
+	}
+	
+	public int getRegionWidth(){
+		return region.getRegionWidth();
+	}
+	
+	public int getRegionHeight(){
+		return region.getRegionHeight();
+	}
+	
+	/** Gets the centered point in the hitbox area.*/
+	public Vector2 getHitBoxCenterPos(){
+		float x = getHitBox().x + getHitBox().width / 2;
+		float y = getHitBox().y + getHitBox().height / 2;
+		return new Vector2(x, y);
 	}
 	
 	public void setWorldManager(WorldManager worldManager){
@@ -52,10 +117,6 @@ public class Entity {
 	
 	public void setLightSource(Vector2 position){
 		this.light = new Light(position, 100f, 10, 0.6f, lightManager.getRayHandler());
-	}
-	
-	public Box getHitBox(){
-		return null;
 	}
 	
 	/** Returns the index of rendering order. Look at class LayerIndex.class. */
@@ -71,6 +132,14 @@ public class Entity {
 	public boolean isSolid(){
 		return isSolid;
 	} 
+	
+	public boolean isInWater(){
+		return inWater;
+	}
+	
+	public void setInWater(boolean inWater){
+		this.inWater = inWater;
+	}
 	
 	public static class LayerIndex{
 		

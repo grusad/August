@@ -10,8 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import engine.entities.Entity;
 
 public class Particle extends Entity{
-	
-	protected TextureRegion region;
 
 	protected static Random random = new Random();
 
@@ -29,8 +27,7 @@ public class Particle extends Entity{
 	protected float angle;
 	
 	public Particle(Vector2 position, TextureRegion region, float lifeSeconds){
-		super(position);
-		this.region = region;
+		super(position, region);
 		this.lifeSeconds = lifeSeconds;
 		this.originPosition = new Vector2(position);
 		this.xOrgin = position.x;
@@ -41,12 +38,12 @@ public class Particle extends Entity{
 		  timer += Gdx.graphics.getDeltaTime();
 		  if(timer >= lifeSeconds) ParticleManager.removeParticle(this);
 		  if(floor != -1)
-			  if(position.y <= floor) ParticleManager.removeParticle(this);
+			  if(getWorldPosition().y <= floor) ParticleManager.removeParticle(this);
 		  
 	}
 	
 	public void render(SpriteBatch batch){
-		batch.draw(region, position.x, position.y, 0, 0, region.getRegionWidth(), region.getRegionHeight(), scaleX, scaleY, angle);	
+		batch.draw(region, getWorldPosition().x, getWorldPosition().y, 0, 0, region.getRegionWidth(), region.getRegionHeight(), scaleX, scaleY, angle);	
 	}
 
 }

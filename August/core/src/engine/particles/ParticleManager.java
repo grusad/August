@@ -35,7 +35,7 @@ public class ParticleManager {
 		if(type == ParticleType.MineParticle)  for(int i = 0; i < amount; i++) addParticle(new MineParticle(new Vector2(position)));
 		if(type == ParticleType.RainParticle){
 			for(int i = 0; i < amount; i++){
-				float x = (position.x - (Gdx.graphics.getWidth() / 2) / Camera.SCALE) - 160 + random.nextInt((Gdx.graphics.getWidth()) / Camera.SCALE + 160 * 2);
+				float x = (position.x - (Gdx.graphics.getWidth() / 2) / Camera.SCALE) - 160 * 2 + random.nextInt((Gdx.graphics.getWidth()) / Camera.SCALE + 160 * 4);
 				float y = (position.y + (Gdx.graphics.getHeight() / 2) / Camera.SCALE) + 64;
 				addParticle(new RainParticle(new Vector2(x, y)));
 			}

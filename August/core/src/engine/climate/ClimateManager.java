@@ -9,22 +9,30 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
 import engine.utils.DataManager.WorldData;
+import engine.utils.ValueTarget;
 import engine.world.WorldManager;
 
 public class ClimateManager {
 	
 	private static Random random = new Random();
 	
+	private ValueTarget windTarget = null;
+	private ValueTarget rainTarget = null;
+	private ValueTarget fogTarget = null;
+	
 	private float windLevel = 0;
 	private float rainLevel = 0;
 	private float fogLevel = 0;
 	private float duration = 0;
-	private float temperature = 0;
 	
 	private float angleWave;
 	private static float MAX_WAVES = 2.4f;
 	private static float MIN_WAVES = 1.4f;
-	private static int CHANCE_TO_RAIN = 100;
+	private static int CHANCE_TO_RAIN = 25;
+	
+	private static int MAX_CLIMATE_DURATION = 180;
+	private static int MIN_CLIMATE_DURATION = 80;
+	
 	
 	private WorldManager worldManager;
 	
@@ -33,6 +41,21 @@ public class ClimateManager {
 	}
 
 	public void update() {
+		
+		if(rainTarget != null){
+			rainLevel = rainTarget.updateAndReturnValue();
+			if(rainTarget.isDone()) rainTarget = null;
+		}
+		
+		if(windTarget != null){
+			windLevel = windTarget.updateAndReturnValue();
+			if(windTarget.isDone()) windTarget = null;
+		}
+		
+		if(fogTarget != null){
+			fogLevel = fogTarget.updateAndReturnValue();
+			if(fogTarget.isDone()) fogTarget = null;
+		}
 		
 		angleWave += Gdx.graphics.getDeltaTime() * 1.5f;
 		while(angleWave > Math.PI * 2)
@@ -46,8 +69,8 @@ public class ClimateManager {
 
 		}
 		
-		ParticleManager.spawnParticleEffect(ParticleType.RainParticle, worldManager.getMobManager().getPlayer().getPosition(), 
-				(int) (rainLevel * 10));
+		ParticleManager.spawnParticleEffect(ParticleType.RainParticle, worldManager.getMobManager().getPlayer().getWorldPosition(), 
+				(int) (rainLevel * 25));
 		
 	}
 	
@@ -56,14 +79,25 @@ public class ClimateManager {
 	}
 	
 	public void setRandomValues(){
-		windLevel = getRoundedFloatValue(random.nextFloat());
-		if(random.nextBoolean()) windLevel *= -1;
-		if(random.nextInt(100) <= CHANCE_TO_RAIN){
-			rainLevel = getRoundedFloatValue(random.nextFloat());
-		}
-		fogLevel = getRoundedFloatValue(random.nextFloat());
-		duration = random.nextInt(120) + 20;
-		temperature = ThreadLocalRandom.current().nextInt(28, 45);
+		
+		float windNewValue = 0;
+		float rainNewValue = 0;
+		float fogNewValue = 0;
+		
+		windNewValue = getRoundedFloatValue(random.nextFloat());
+		if(random.nextBoolean()) windNewValue *= -1;
+		if(random.nextInt(100) <= CHANCE_TO_RAIN) rainNewValue = getRoundedFloatValue(random.nextFloat());
+		fogNewValue = getRoundedFloatValue(random.nextFloat());
+		duration = ThreadLocalRandom.current().nextInt(MIN_CLIMATE_DURATION, MAX_CLIMATE_DURATION);
+		
+		transendNewValues(windNewValue, rainNewValue, fogNewValue);
+
+	}
+	
+	private void transendNewValues(float wind, float rain, float fog){
+		windTarget = new ValueTarget(windLevel, wind, .1f);
+		rainTarget = new ValueTarget(rainLevel, rain, .1f);
+		fogTarget = new ValueTarget(fogLevel, fog, .1f);
 	}
 	
 	private float getRoundedFloatValue(float value){
@@ -84,14 +118,9 @@ public class ClimateManager {
 	public float getFogLevel() {
 		return fogLevel;
 	}
-
 	
 	public float getDuration() {
 		return duration;
-	}
-	
-	public float getTemperature(){
-		return temperature;
 	}
 	
 	public float getWavesAngle(){
@@ -113,7 +142,6 @@ public class ClimateManager {
 		windLevel = data.windLevel;
 		fogLevel = data.fogLevel;
 		rainLevel = data.rainLevel;
-		temperature = data.temperature;
 	}
 
 }

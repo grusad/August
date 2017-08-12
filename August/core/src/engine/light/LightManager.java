@@ -4,20 +4,19 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import box2dLight.RayHandler;
-import engine.debug.DebugManager;
 import engine.graphics.Camera;
 import engine.world.WorldManager;
 import engine.world.WorldProperties;
 
 public class LightManager {
 	
-	private WorldManager worldManager;
-	
 	private World world;
 	private RayHandler handler;
 	private Camera camera;
+	private WorldManager worldManager;
 	
 	private float amount;
+	private float ambientOffset = 0;
 	
 	private static float MAX_DARKNESS = .2f;
 	
@@ -34,17 +33,20 @@ public class LightManager {
 	
 	private void updateAmbientLight(){
 		
-		float ambientOffset = worldManager.getClimateManager().getRainLevel();
 		amount = WorldProperties.TIME;
+		if(amount > 1) amount = 1;
+		
+		ambientOffset = worldManager.getClimateManager().getRainLevel() / 2;
+		
 		amount -= ambientOffset;
 		
 		if(amount <= MAX_DARKNESS) amount = MAX_DARKNESS;
 		
-		if(DebugManager.IN_DEBUG_MODE) amount = 1;
+		//if(DebugManager.IN_DEBUG_MODE) amount = 1;
 		
 		this.handler.setAmbientLight(amount, amount, amount, amount);
 	}
-	
+
 	public void update(){
 		updateAmbientLight();
 		this.handler.setCombinedMatrix(camera.getOrthographicCamera());
