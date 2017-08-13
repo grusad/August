@@ -1,0 +1,15 @@
+{
+
+spawnPercent: 40
+id: 2
+hp: 5
+textureXOffset: 0
+textureYOffset: 0
+hitBoxW: 16
+hitBoxH: 16
+layerIndex: 0
+isMinable: true
+isSolid: false
+
+
+}

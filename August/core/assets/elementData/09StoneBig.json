@@ -1,5 +1,7 @@
 {
 
+spawnPercent: 10
+id: 9
 hp: 300
 textureXOffset: 2
 textureYOffset: 2

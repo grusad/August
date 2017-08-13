@@ -9,9 +9,9 @@ import engine.utils.Vector2i;
 public class Elements {
 	
 	public static class PalmTree extends Element {
-		public static int ID = 1;
+
 		public PalmTree(Vector2i tiledPosition)  {
-			super(tiledPosition, Textures.PALM_TREE, ElementReader.getElementData("PalmTree.json"), ID);
+			super(tiledPosition, Textures.PALM_TREE);
 		}
 		@Override
 		protected void dropResource() {
@@ -21,9 +21,9 @@ public class Elements {
 	}
 	
 	public static class PinkTree01 extends Element {
-		public static int ID = 2;	
+
 		public PinkTree01(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.PINK_TREE_01, ElementReader.getElementData("PinkTree01.json"), ID);
+			super(tiledPosition, Textures.PINK_TREE_01);
 		}
 		@Override
 		protected void dropResource() {
@@ -33,10 +33,9 @@ public class Elements {
 	}
 	
 	public static class PinkTree02 extends Element {
-		public static int ID = 3;
 
 		public PinkTree02(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.PINK_TREE_02, ElementReader.getElementData("PinkTree02.json"), ID);
+			super(tiledPosition, Textures.PINK_TREE_02);
 		}
 
 		@Override
@@ -47,9 +46,9 @@ public class Elements {
 	}
 
 	public static class StoneMedium extends Element {
-		public static int ID = 4;
+
 		public StoneMedium(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.STONE_MEDIUM, ElementReader.getElementData("StoneMedium.json"), ID);
+			super(tiledPosition, Textures.STONE_MEDIUM);
 		}
 		@Override
 		protected void dropResource() {
@@ -59,9 +58,9 @@ public class Elements {
 	}
 	
 	public static class StoneSmallSingle extends Element {
-		public static int ID = 5;
+
 		public StoneSmallSingle(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.STONE_SMALL_SINGLE, ElementReader.getElementData("StoneSmallSingle.json"), ID);
+			super(tiledPosition, Textures.STONE_SMALL_SINGLE);
 		}
 		@Override
 		protected void dropResource() {
@@ -70,9 +69,9 @@ public class Elements {
 	}
 	
 	public static class StoneSmallDouble extends Element {
-		public static int ID = 6;
+
 		public StoneSmallDouble(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.STONE_SMALL_DOUBLE, ElementReader.getElementData("StoneSmallDouble.json"), ID);
+			super(tiledPosition, Textures.STONE_SMALL_DOUBLE);
 		}
 		@Override
 		protected void dropResource() {
@@ -81,9 +80,9 @@ public class Elements {
 	}
 	
 	public static class StoneBig extends Element {
-		public static int ID = 7;
+
 		public StoneBig(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.STONE_BIG, ElementReader.getElementData("StoneBig.json"), ID);
+			super(tiledPosition, Textures.STONE_BIG);
 		}
 		@Override
 		protected void dropResource() {
@@ -94,9 +93,9 @@ public class Elements {
 	}
 	
 	public static class PalmTreeSmall extends Element {
-		public static int ID = 8;
+
 		public PalmTreeSmall(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.PALM_TREE_SMALL, ElementReader.getElementData("PalmTreeSmall.json"), ID);
+			super(tiledPosition, Textures.PALM_TREE_SMALL);
 		}
 		@Override
 		protected void dropResource() {
@@ -106,15 +105,55 @@ public class Elements {
 	}
 	
 	public static class PotatoPlant extends Element {
-		public static int ID = 9;
+
+		
 		public PotatoPlant(Vector2i tiledPosition) {
-			super(tiledPosition, Textures.POTATO_PLANT, ElementReader.getElementData("PotatoPlant.json"), ID);
+			super(tiledPosition, Textures.POTATO_PLANT);
 		}
 		@Override
 		protected void dropResource() {
 			// TODO Auto-generated method stub
 			
 		}
+	}
+	
+	public static class FlowerGrass extends Element{
+
+		public FlowerGrass(Vector2i tilePosition) {
+			super(tilePosition, Textures.getRandomRegion(Textures.GRASS_ELEMENT));
+		}
+
+		@Override
+		protected void dropResource() {
+			
+		}
+		
+	}
+	
+	public static class PinkFlower extends Element{
+		public PinkFlower(Vector2i tilePosition) {
+			super(tilePosition,Textures.FLOWER_PINK);
+		}
+
+		@Override
+		protected void dropResource() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	public static class BlueFlower extends Element{
+		public BlueFlower(Vector2i tilePosition) {
+			super(tilePosition,Textures.FLOWER_BLUE);
+		}
+
+		@Override
+		protected void dropResource() {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 	
 

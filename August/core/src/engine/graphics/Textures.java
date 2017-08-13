@@ -48,6 +48,9 @@ public class Textures{
 	public static TextureRegion STONE_SMALL_DOUBLE = TextureSheet.ELEMENTS.getTextureRegion(4, 2, 16, 16);
 	public static TextureRegion STONE_BIG = TextureSheet.ELEMENTS.getTextureRegion(4, 3, 48, 48);
 	public static TextureRegion POTATO_PLANT = TextureSheet.ELEMENTS.getTextureRegion(8, 0, 32, 32);
+	public static TextureRegion[] GRASS_ELEMENT = TextureSheet.splitSheet(TextureSheet.ELEMENTS, 16 * 4, 6 * 16, 16 * 3, 16, true);
+	public static TextureRegion FLOWER_PINK = TextureSheet.ELEMENTS.getTextureRegion(7, 4, 16, 32); 
+	public static TextureRegion FLOWER_BLUE = TextureSheet.ELEMENTS.getTextureRegion(8, 5, 16, 16);
 	
 	public static TextureRegion PALM_WOOD = TextureSheet.RESOURCES.getTextureRegion(0, 0, 8, 8);
 	public static TextureRegion ROCK = TextureSheet.RESOURCES.getTextureRegion(1, 0, 8, 8);

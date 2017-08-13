@@ -42,7 +42,9 @@ public abstract class InteractableEntity extends Entity{
 		batch.setColor(Color.DARK_GRAY);
 		batch.draw(TextureSheet.BLANK, x, y, barLength, barHeight);
 		batch.setColor(Color.LIGHT_GRAY);
-		batch.draw(TextureSheet.BLANK, x, y, barLength * (currentHP / maxHP), barHeight);
+		float current = barLength * (currentHP / maxHP);
+		if(current < 0) current = 0;
+		batch.draw(TextureSheet.BLANK, x, y, current, barHeight);
 		
 		batch.setColor(1, 1, 1, 1);	
 		

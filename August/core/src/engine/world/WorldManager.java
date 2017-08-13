@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import engine.climate.ClimateManager;
 import engine.elements.ElementManager;
+import engine.elements.ElementReader;
 import engine.entities.Entity;
 import engine.entities.Entity.LayerIndex;
 import engine.entities.InteractableEntity;
@@ -103,6 +104,7 @@ public class WorldManager {
 		mobManager.getPlayer().update();
 		
 		Collections.sort(entities, Utils.positionSorter);
+		Collections.sort(bottomLayerEntities, Utils.positionSorter);
 		
 	}
 	
@@ -212,6 +214,7 @@ public class WorldManager {
 	
 	/** Clean up all lists with entities and disposes all the resources.*/
 	public void cleanUp(){
+		ElementReader.dispose();
 		clearEntityLists();
 		elementManager.getAllElements().clear();
 		ParticleManager.particles.clear();

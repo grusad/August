@@ -1,8 +1,10 @@
 {
 
-hp: 20
+spawnPercent: 10
+id: 8
+hp: 10
 textureXOffset: 12
-textureYOffset: 4
+textureYOffset: 12
 hitBoxW: 8
 hitBoxH: 8
 layerIndex: 0

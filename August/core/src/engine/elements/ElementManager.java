@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import engine.elements.ElementReader.ElementData;
+import engine.elements.Elements.BlueFlower;
+import engine.elements.Elements.FlowerGrass;
 import engine.elements.Elements.PalmTree;
 import engine.elements.Elements.PalmTreeSmall;
+import engine.elements.Elements.PinkFlower;
 import engine.elements.Elements.PinkTree01;
 import engine.elements.Elements.PinkTree02;
 import engine.elements.Elements.PotatoPlant;
@@ -24,12 +28,6 @@ import engine.world.WorldManager;
 
 public class ElementManager {
 	
-	private static final int SPAWN_CHANCE_PALM_TREE = 2;
-	private static final int SPAWN_CHANCE_PALM_TREE_SMALL = 1;
-	private static final int SPAWN_CHANCE_PINK_TREE = 1;
-	private static final int SPAWN_CHANCE_STONES = 1;
-	private static final int SPAWN_CHANCE_POTATO_PLANT = 1;
-	
 	private Random random = new Random();
 	
 	private int x0;
@@ -44,6 +42,8 @@ public class ElementManager {
 	
 	public ElementManager(WorldManager worldManager){
 		this.worldManager = worldManager;
+		
+		ElementReader.loadElementData();
 		
 	}
 	
@@ -62,23 +62,17 @@ public class ElementManager {
 			for(int x = 0; x < worldManager.getWidth(); x++){
 				if(denyElementAdding(x, y)) continue;
 				
-				int ID = 0;
+				ElementData elementData = ElementReader.getRandomElementData();
 				
-				if(random.nextInt(100) < SPAWN_CHANCE_PALM_TREE) ID = PalmTree.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_PALM_TREE_SMALL) ID = PalmTreeSmall.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_PINK_TREE) ID = PinkTree01.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_PINK_TREE) ID = PinkTree02.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_STONES) ID = StoneSmallSingle.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_STONES) ID = StoneSmallDouble.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_STONES) ID = StoneMedium.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_STONES) ID = StoneBig.ID;
-				else if(random.nextInt(100) < SPAWN_CHANCE_POTATO_PLANT) ID = PotatoPlant.ID;
-				
-				else continue;
-				
-				addElementByID(ID, new Vector2i(x, y));
+				if(checkSpawnPercent(elementData))
+					addElementByID(elementData.id, new Vector2i(x, y));
 			}
 		}
+	}
+	
+	private boolean checkSpawnPercent(ElementData elementData){
+		if(random.nextInt(100) <= elementData.spawnPercent) return true;
+		else return false;
 	}
 	
 	/** Checks if its possible to add element on the given position.*/
@@ -96,15 +90,18 @@ public class ElementManager {
 	/** Make sure to add Elements!!*/
 	public void addElementByID(int ID, Vector2i tiledPosition){
 		
-		if(ID == PalmTree.ID) addElement(new PalmTree(tiledPosition));
-		if(ID == PalmTreeSmall.ID) addElement(new PalmTreeSmall(tiledPosition));
-		if(ID == PinkTree01.ID) addElement(new PinkTree01(tiledPosition));
-		if(ID == PinkTree02.ID) addElement(new PinkTree02(tiledPosition));
-		if(ID == StoneSmallSingle.ID) addElement(new StoneSmallSingle(tiledPosition));
-		if(ID == StoneSmallDouble.ID) addElement(new StoneSmallDouble(tiledPosition));
-		if(ID == StoneMedium.ID) addElement(new StoneMedium(tiledPosition));
-		if(ID == StoneBig.ID) addElement(new StoneBig(tiledPosition));
-		if(ID == PotatoPlant.ID) addElement(new PotatoPlant(tiledPosition));
+		if(ID == ElementReader.getElementData("PalmTree").id) addElement(new PalmTree(tiledPosition));
+		if(ID == ElementReader.getElementData("PalmTreeSmall").id) addElement(new PalmTreeSmall(tiledPosition));
+		if(ID == ElementReader.getElementData("PinkTree01").id) addElement(new PinkTree01(tiledPosition));
+		if(ID == ElementReader.getElementData("PinkTree02").id) addElement(new PinkTree02(tiledPosition));
+		if(ID == ElementReader.getElementData("StoneSmallSingle").id) addElement(new StoneSmallSingle(tiledPosition));
+		if(ID == ElementReader.getElementData("StoneSmallDouble").id) addElement(new StoneSmallDouble(tiledPosition));
+		if(ID == ElementReader.getElementData("StoneMedium").id) addElement(new StoneMedium(tiledPosition));
+		if(ID == ElementReader.getElementData("StoneBig").id) addElement(new StoneBig(tiledPosition));
+		if(ID == ElementReader.getElementData("PotatoPlant").id) addElement(new PotatoPlant(tiledPosition));
+		if(ID == ElementReader.getElementData("FlowerGrass").id) addElement(new FlowerGrass(tiledPosition));
+		if(ID == ElementReader.getElementData("PinkFlower").id) addElement(new PinkFlower(tiledPosition));
+		if(ID == ElementReader.getElementData("BlueFlower").id) addElement(new BlueFlower(tiledPosition));
 		
 	}
 	
@@ -120,7 +117,6 @@ public class ElementManager {
 	}
 	
 	public void update(Camera camera){
-		
 		
 		elementsOnScreen.clear();
 		

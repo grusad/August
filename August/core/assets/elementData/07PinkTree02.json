@@ -1,13 +1,14 @@
 {
 
+spawnPercent: 2
+id: 7
 hp: 100
-textureXOffset: 24
-textureYOffset: 22
+textureXOffset: 52
+textureYOffset: 15
 hitBoxW: 16
 hitBoxH: 16
 layerIndex: 0
 isMinable: true
 isSolid: true
-
 
 }

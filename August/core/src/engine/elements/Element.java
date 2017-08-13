@@ -14,18 +14,18 @@ public abstract class Element extends InteractableEntity{
 	
 	private float maxHP;
 	private float currentHP;
-
 	private int id;
 	
-	public Element(Vector2i tilePosition, TextureRegion region, ElementData data, int id) {
+	public Element(Vector2i tilePosition, TextureRegion region) {
 		super(tilePosition, region);
-		this.id = id;
-		setData(data);
+		
+		setData(ElementReader.getElementData(this.getClass().getSimpleName()));
 	}
 	
 	protected abstract void dropResource();
 	
 	private void setData(ElementData data){
+		this.id = data.id;
 		this.xTextureOffset = data.textureXOffset;
 		this.yTextureOffset = data.textureYOffset;
 		this.hitBoxHeight = data.hitBoxH;
