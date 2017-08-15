@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
@@ -20,7 +24,9 @@ import engine.main.Game;
 import engine.mobs.MobManager;
 import engine.particles.ParticleManager;
 import engine.resources.ResourceManager;
+import engine.resources.ResourceReader;
 import engine.shaders.WaterShader;
+import engine.tiles.Tile;
 import engine.tiles.TileManager;
 import engine.utils.DataManager.PlayerData;
 import engine.utils.DataManager.PreferencesData;
@@ -57,6 +63,7 @@ public class WorldManager {
 		climateManager = new ClimateManager(this);
 		ParticleManager.setWorldManager(this);
 		ResourceManager.setWorldManager(this);
+		ResourceReader.loadResourceData();
 			
 	}
 	

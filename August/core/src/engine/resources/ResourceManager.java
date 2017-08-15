@@ -101,8 +101,8 @@ public class ResourceManager {
 	public static void addResourceByID(int ID, Vector2i position){
 		Resource resource = null;
 		
-		if(ID == PalmWood.ID) resource = new PalmWood(position);
-		if(ID == Rock.ID) resource = new Rock(position);
+		if(ID == ResourceReader.getResourceData("PalmWood").id) resource = new PalmWood(position);
+		if(ID == ResourceReader.getResourceData("Rock").id) resource = new Rock(position);
 		
 		addResource(resource);
 	}

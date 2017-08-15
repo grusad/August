@@ -1,6 +1,6 @@
 {
 
-spawnPercent: 50
+spawnPercent: 35
 id: 3
 hp: 100
 textureXOffset: 24

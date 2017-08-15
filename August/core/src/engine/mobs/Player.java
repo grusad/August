@@ -13,6 +13,7 @@ import engine.elements.Element;
 import engine.entities.Entity;
 import engine.entities.InteractableEntity;
 import engine.graphics.Animation;
+import engine.graphics.CursorProperties;
 import engine.graphics.Textures;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
@@ -132,14 +133,12 @@ public class Player extends Mob{
 	
 	private void updateSelectedEntity(){
 		
-		Box box = getAimBox();
-		
 		if(selectedEntity != null){
 			
 			if(selectedEntity instanceof Element){
 				Element element = (Element) selectedEntity;
 				if(element.getCurrentHP() <= 0){
-					selectedEntity = null;
+					resetSelectedEntity();
 					return;
 				}
 				
@@ -184,6 +183,11 @@ public class Player extends Mob{
 		
 	}
 	
+	private void resetSelectedEntity(){
+		CursorProperties.setCursor(CursorProperties.CURSOR_DEFAULT);
+		selectedEntity = null;
+	}
+	
 	public void dropLockedEntity(InteractableEntity entity){
 		
 		Tile tile = worldManager.getTileManager().getTile(entity.getTiledPosition().x, entity.getTiledPosition().y);
@@ -215,6 +219,7 @@ public class Player extends Mob{
 			
 			if(!getAimBox().intersects(selectedEntity.getHitBox())){
 				selectedEntity.stopInteract();
+				resetSelectedEntity();
 				selectedEntity = null;
 			}else{
 				return;
@@ -230,6 +235,10 @@ public class Player extends Mob{
 			
 			if(hitBox.intersects(entity.getHitBox())){
 				selectedEntity = entity;
+				if(selectedEntity.isMinable())
+					CursorProperties.setCursor(CursorProperties.CURSOR_MINE);
+				else if(selectedEntity.isMovable())
+					CursorProperties.setCursor(CursorProperties.CURSOR_GRAB);
 				entity.startInteract();
 				return;
 			}
@@ -318,6 +327,10 @@ public class Player extends Mob{
 
 		return data;
 		
+	}
+	
+	public InteractableEntity getSelectedEntity(){
+		return selectedEntity;
 	}
 	
 	public void setData(PlayerData data){

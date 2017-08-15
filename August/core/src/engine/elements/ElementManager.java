@@ -8,7 +8,7 @@ import java.util.Random;
 
 import engine.elements.ElementReader.ElementData;
 import engine.elements.Elements.BlueFlower;
-import engine.elements.Elements.FlowerGrass;
+import engine.elements.Elements.Grass;
 import engine.elements.Elements.PalmTree;
 import engine.elements.Elements.PalmTreeSmall;
 import engine.elements.Elements.PinkFlower;
@@ -99,7 +99,7 @@ public class ElementManager {
 		if(ID == ElementReader.getElementData("StoneMedium").id) addElement(new StoneMedium(tiledPosition));
 		if(ID == ElementReader.getElementData("StoneBig").id) addElement(new StoneBig(tiledPosition));
 		if(ID == ElementReader.getElementData("PotatoPlant").id) addElement(new PotatoPlant(tiledPosition));
-		if(ID == ElementReader.getElementData("FlowerGrass").id) addElement(new FlowerGrass(tiledPosition));
+		if(ID == ElementReader.getElementData("Grass").id) addElement(new Grass(tiledPosition));
 		if(ID == ElementReader.getElementData("PinkFlower").id) addElement(new PinkFlower(tiledPosition));
 		if(ID == ElementReader.getElementData("BlueFlower").id) addElement(new BlueFlower(tiledPosition));
 		

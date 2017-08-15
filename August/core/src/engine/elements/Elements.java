@@ -117,9 +117,9 @@ public class Elements {
 		}
 	}
 	
-	public static class FlowerGrass extends Element{
+	public static class Grass extends Element{
 
-		public FlowerGrass(Vector2i tilePosition) {
+		public Grass(Vector2i tilePosition) {
 			super(tilePosition, Textures.getRandomRegion(Textures.GRASS_ELEMENT));
 		}
 

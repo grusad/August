@@ -1,0 +1,9 @@
+{
+id: 2
+hitBoxW: 8
+hitBoxH: 8
+layerIndex: -1
+isMovable: true
+isSolid: false
+
+}

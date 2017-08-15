@@ -1,7 +1,12 @@
 package engine.debug;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -94,6 +99,29 @@ public class DebugManager {
 	}
 	
 	public void update(Camera camera){
+		
+		if(IN_DEBUG_MODE){
+			if(Gdx.input.isKeyJustPressed(Keys.F2)){
+				
+				Pixmap pixmap = new Pixmap(worldManager.getWidth(), worldManager.getHeight(), Format.RGB888);
+				for(int y = 0; y < worldManager.getHeight(); y++){
+					for(int x = 0; x < worldManager.getWidth(); x++){
+						if(worldManager.getTileManager().getTile(x, y).getID() == Tile.WATER.getID())
+							pixmap.drawPixel(x, y, 52428);
+						else if(worldManager.getTileManager().getTile(x, y).getID() == Tile.SAND.getID()) pixmap.drawPixel(x, y, 16776960);
+						else pixmap.drawPixel(x, y, 65344);
+					}
+				}
+				
+				FileHandle file = new FileHandle("map.png");
+				
+				PixmapIO.writePNG(file, pixmap);
+				
+				pixmap.dispose();
+				
+				System.out.println("Printed the map.");
+			}
+		}
 		
 		x0 = (int) (camera.getPosition().x - camera.getWidth() / 2) / Tile.SIZE - 5;
 		x1 = (int) (x0 + (camera.getWidth()) / Tile.SIZE) + 9;

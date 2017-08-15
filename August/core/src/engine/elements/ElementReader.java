@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 
@@ -18,7 +17,7 @@ public class ElementReader {
 	
 	public static void loadElementData(){
 		data.put("BlueFlower", get("01BlueFlower"));
-		data.put("FlowerGrass", get("02FlowerGrass"));
+		data.put("Grass", get("02Grass"));
 		data.put("PalmTree", get("03PalmTree"));
 		data.put("PalmTreeSmall", get("04PalmTreeSmall"));
 		data.put("PinkFlower", get("05PinkFlower"));

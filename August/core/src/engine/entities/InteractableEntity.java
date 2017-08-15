@@ -15,6 +15,7 @@ public abstract class InteractableEntity extends Entity{
 	private ValueBouncer valueBouncer = null;
 	
 	protected boolean isMinable;
+	protected boolean isMovable;
 
 	public InteractableEntity(Vector2i tilesPosition, TextureRegion region) {
 		super(tilesPosition, region);
@@ -66,6 +67,10 @@ public abstract class InteractableEntity extends Entity{
 	
 	public boolean isMinable(){
 		return isMinable;
+	}
+	
+	public boolean isMovable(){
+		return isMovable;
 	}
 
 }
