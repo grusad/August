@@ -1,8 +1,12 @@
 package engine.elements;
 
+import java.util.ArrayList;
+
 import engine.graphics.Textures;
+import engine.resources.Resource;
 import engine.resources.ResourceManager;
 import engine.resources.Resources.PalmWood;
+import engine.resources.Resources.PinkWood;
 import engine.resources.Resources.Rock;
 import engine.utils.Vector2i;
 
@@ -14,8 +18,14 @@ public class Elements {
 			super(tiledPosition, Textures.PALM_TREE);
 		}
 		@Override
-		protected void dropResource() {
-			ResourceManager.addResource(new PalmWood(getTiledPosition()));
+		protected void dropResource(Vector2i tilePostion) {
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new PalmWood(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 		}
 		
 	}
@@ -26,8 +36,15 @@ public class Elements {
 			super(tiledPosition, Textures.PINK_TREE_01);
 		}
 		@Override
-		protected void dropResource() {
-			// TODO Auto-generated method stub
+		protected void dropResource(Vector2i tilePostion) {
+			
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new PinkWood(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 			
 		}
 	}
@@ -39,8 +56,14 @@ public class Elements {
 		}
 
 		@Override
-		protected void dropResource() {
-			// TODO Auto-generated method stub
+		protected void dropResource(Vector2i tilePostion) {
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new PinkWood(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 			
 		}
 	}
@@ -51,9 +74,14 @@ public class Elements {
 			super(tiledPosition, Textures.STONE_MEDIUM);
 		}
 		@Override
-		protected void dropResource() {
-			ResourceManager.addResource(new Rock(getTiledPosition()));
-			ResourceManager.addResource(new Rock(getTiledPosition()));
+		protected void dropResource(Vector2i tilePostion) {
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new Rock(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 		}
 	}
 	
@@ -63,8 +91,14 @@ public class Elements {
 			super(tiledPosition, Textures.STONE_SMALL_SINGLE);
 		}
 		@Override
-		protected void dropResource() {
-			ResourceManager.addResource(new Rock(getTiledPosition()));
+		protected void dropResource(Vector2i tilePostion) {
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new Rock(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 		}
 	}
 	
@@ -74,8 +108,14 @@ public class Elements {
 			super(tiledPosition, Textures.STONE_SMALL_DOUBLE);
 		}
 		@Override
-		protected void dropResource() {
-			ResourceManager.addResource(new Rock(getTiledPosition()));
+		protected void dropResource(Vector2i tilePostion) {
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new Rock(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 		}
 	}
 	
@@ -85,10 +125,14 @@ public class Elements {
 			super(tiledPosition, Textures.STONE_BIG);
 		}
 		@Override
-		protected void dropResource() {
-			ResourceManager.addResource(new Rock(getTiledPosition()));
-			ResourceManager.addResource(new Rock(getTiledPosition()));
-			ResourceManager.addResource(new Rock(getTiledPosition()));
+		protected void dropResource(Vector2i tilePostion) {
+			ArrayList<Resource> resources = new ArrayList<>();
+			
+			for(int i = 0; i < resourcesToDrop; i++){
+				resources.add(new Rock(tilePostion));
+			}
+			
+			ResourceManager.spawnResource(resources);
 		}
 	}
 	
@@ -98,7 +142,7 @@ public class Elements {
 			super(tiledPosition, Textures.PALM_TREE_SMALL);
 		}
 		@Override
-		protected void dropResource() {
+		protected void dropResource(Vector2i tilePostion) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -111,7 +155,7 @@ public class Elements {
 			super(tiledPosition, Textures.POTATO_PLANT);
 		}
 		@Override
-		protected void dropResource() {
+		protected void dropResource(Vector2i tilePostion) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -124,7 +168,7 @@ public class Elements {
 		}
 
 		@Override
-		protected void dropResource() {
+		protected void dropResource(Vector2i tilePostion) {
 			
 		}
 		
@@ -136,7 +180,7 @@ public class Elements {
 		}
 
 		@Override
-		protected void dropResource() {
+		protected void dropResource(Vector2i tilePostion) {
 			// TODO Auto-generated method stub
 			
 		}
@@ -149,7 +193,7 @@ public class Elements {
 		}
 
 		@Override
-		protected void dropResource() {
+		protected void dropResource(Vector2i tilePostion) {
 			// TODO Auto-generated method stub
 			
 		}

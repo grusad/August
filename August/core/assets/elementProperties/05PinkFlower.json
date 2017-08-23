@@ -1,6 +1,7 @@
 {
+name: Pink Flower
 spawnPercent: 10
-id: 1
+id: 5
 hp: 5
 textureXOffset: 0
 textureYOffset: 0
@@ -9,6 +10,10 @@ hitBoxH: 16
 layerIndex: 0
 isMinable: true
 isSolid: false
+minDropResource: 0
+maxDropResource: 0
+minDropFood: 0
+maxDropFood: 0
 
 
 }

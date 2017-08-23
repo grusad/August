@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import engine.entities.InteractableEntity;
-import engine.resources.ResourceReader.ResourceData;
+import engine.resources.ResourceReader.ResourceProperties;
 import engine.utils.Vector2i;
 
 public class Resource extends InteractableEntity{
@@ -13,16 +13,17 @@ public class Resource extends InteractableEntity{
 
 	public Resource(Vector2i tiledPosition, TextureRegion region) {
 		super(tiledPosition, region);
-		setData(ResourceReader.getResourceData(this.getClass().getSimpleName()));
+		setProperties(ResourceReader.getResourceProperties(this.getClass().getSimpleName()));
 	}
 	
-	private void setData(ResourceData data){
-		this.id = data.id;
-		this.hitBoxWidth = data.hitBoxW;
-		this.hitBoxHeight = data.hitBoxH;
-		this.isMovable = data.isMovable;
-		this.isSolid = data.isSolid;
-		this.layerIndex = data.layerIndex;
+	private void setProperties(ResourceProperties properties){
+		this.name = properties.name;
+		this.id = properties.id;
+		this.hitBoxWidth = properties.hitBoxW;
+		this.hitBoxHeight = properties.hitBoxH;
+		this.isMovable = properties.isMovable;
+		this.isSolid = properties.isSolid;
+		this.layerIndex = properties.layerIndex;
 	}
 	
 	public void update(){

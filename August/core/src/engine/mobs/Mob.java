@@ -1,8 +1,6 @@
 package engine.mobs;
 
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import engine.entities.Entity;
@@ -10,14 +8,11 @@ import engine.graphics.Animation;
 import engine.graphics.Textures;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
-import engine.utils.Box;
 import engine.utils.Psysics;
 
 public abstract class Mob extends Entity{
 	
 	private Psysics psysics = new Psysics(this);
-	
-	protected TextureRegion region;
 	
 	protected Animation[] animations = new Animation[8];
 	protected Animation[] swimAnimations = new Animation[8];
@@ -38,10 +33,10 @@ public abstract class Mob extends Entity{
 		this.region = animations[direction].getFrameAt(0);
 		this.staticWidth = this.region.getRegionWidth();
 		this.staticHeight = this.region.getRegionHeight();
+
 	}
 	
 	protected abstract void setAnimations();
-	public abstract Box getHitBox();
 	
 	protected void move(float xx, float yy){
 		
@@ -90,10 +85,6 @@ public abstract class Mob extends Entity{
 			this.region = animations[direction].getFrameAt(0);
 		}
 		
-	}
-	
-	public void render(SpriteBatch batch){
-		batch.draw(region, getWorldPosition().x, getWorldPosition().y);
 	}
 	
 	public int getWidth(){

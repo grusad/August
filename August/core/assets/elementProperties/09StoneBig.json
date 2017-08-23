@@ -1,5 +1,6 @@
 {
 
+name: Stone Big
 spawnPercent: 3
 id: 9
 hp: 300
@@ -10,5 +11,9 @@ hitBoxH: 18
 layerIndex: 0
 isMinable: true
 isSolid: true
+minDropResource: 7
+maxDropResource: 12
+minDropFood: 0
+maxDropFood: 0
 
 }

@@ -14,6 +14,7 @@ public class TextureSheet extends Texture {
 	public static final TextureSheet PARTICLES = new TextureSheet("textureSheets/particles.png", 4, 0);
 	public static final TextureSheet BLANK = new TextureSheet("textureSheets/blank.png");
 	public static final TextureSheet RESOURCES = new TextureSheet("textureSheets/resources.png", 8, 0);
+	public static final TextureSheet FOOD = new TextureSheet("textureSheets/food.png", 8, 0);
 	
 	private static final Random random = new Random();
 

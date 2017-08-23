@@ -134,6 +134,7 @@ public class DataManager {
 		public int id;
 		public int x;
 		public int y;
+		public float rotation;
 	}
 	
 	public static class PlayerData{

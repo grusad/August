@@ -1,5 +1,6 @@
 {
 
+name: Stone Small
 spawnPercent: 10
 id: 12
 hp: 300
@@ -10,5 +11,9 @@ hitBoxH: 5
 layerIndex: 0
 isMinable: true
 isSolid: true
+minDropResource: 1
+maxDropResource: 2
+minDropFood: 0
+maxDropFood: 0
 
 }

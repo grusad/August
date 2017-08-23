@@ -1,10 +1,11 @@
 package engine.elements;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import engine.audio.AudioManager;
-import engine.elements.ElementReader.ElementData;
+import engine.elements.ElementReader.ElementProperties;
 import engine.entities.InteractableEntity;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
@@ -15,25 +16,32 @@ public abstract class Element extends InteractableEntity{
 	private float maxHP;
 	private float currentHP;
 	private int id;
+	protected int resourcesToDrop = 0;
 	
 	public Element(Vector2i tilePosition, TextureRegion region) {
 		super(tilePosition, region);
 		
-		setData(ElementReader.getElementData(this.getClass().getSimpleName()));
+		setProperties(ElementReader.getElementProperties(this.getClass().getSimpleName()));
 	}
 	
-	protected abstract void dropResource();
+	protected abstract void dropResource(Vector2i tilePostion);
 	
-	private void setData(ElementData data){
-		this.id = data.id;
-		this.xTextureOffset = data.textureXOffset;
-		this.yTextureOffset = data.textureYOffset;
-		this.hitBoxHeight = data.hitBoxH;
-		this.hitBoxWidth = data.hitBoxW;
-		this.layerIndex = data.layerIndex;
-		this.isSolid = data.isSolid;
-		this.isMinable = data.isMinable;
-		this.maxHP = this.currentHP = data.hp;
+	private void setProperties(ElementProperties properties){
+		this.name = properties.name;
+		this.id = properties.id;
+		this.xTextureOffset = properties.textureXOffset;
+		this.yTextureOffset = properties.textureYOffset;
+		this.hitBoxHeight = properties.hitBoxH;
+		this.hitBoxWidth = properties.hitBoxW;
+		this.layerIndex = properties.layerIndex;
+		this.isSolid = properties.isSolid;
+		this.isMinable = properties.isMinable;
+		this.maxHP = this.currentHP = properties.hp;
+		int minDropResource = properties.minDropResource;
+		int maxDropResource = properties.maxDropResource;
+		if(minDropResource < maxDropResource){
+			this.resourcesToDrop = ThreadLocalRandom.current().nextInt(minDropResource, maxDropResource + 1);			
+		}
 	}
 	
 	public void update(){
@@ -42,9 +50,8 @@ public abstract class Element extends InteractableEntity{
 		
 		if(currentHP <= 0){
 			worldManager.getElementManager().removeElement(this);
-			AudioManager.playSound(AudioManager.getSound("button"), 0.5f);
 			ParticleManager.spawnParticleEffect(ParticleType.MineParticle, getHitBoxCenterPos(), 100);
-			this.dropResource();
+			this.dropResource(getTiledPosition());
 		} 
 		
 	}

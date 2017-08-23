@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
+
 import engine.graphics.Camera;
 import engine.resources.Resources.PalmWood;
+import engine.resources.Resources.PinkWood;
 import engine.resources.Resources.Rock;
 import engine.tiles.Tile;
 import engine.utils.DataManager.ResourceData;
@@ -24,6 +27,9 @@ public class ResourceManager {
 	
 	public static Map<Integer, ArrayList<Resource>> resources = new HashMap<>();
 	public static List<Resource> resourcesOnScreen = new ArrayList<>();
+	private static List<Resource> resourceToSpawn = new ArrayList<>();
+	
+	private static float spawnCooldown = 0;
 	
 	public static void update(Camera camera){
 		
@@ -51,7 +57,27 @@ public class ResourceManager {
 		for(int j = 0; j < resourcesOnScreen.size(); j++){
 			resourcesOnScreen.get(j).update();
 		}
+	
 		
+		if(spawnCooldown > 0){
+			spawnCooldown -= Gdx.graphics.getDeltaTime();
+		}
+		
+		if(!resourceToSpawn.isEmpty()){
+			
+			if(spawnCooldown <= 0){
+				Resource resource = resourceToSpawn.get(0);
+				addResource(resource);
+				resource.runDropAnimation();
+				resourceToSpawn.remove(0);
+				spawnCooldown = 0.1f;
+			}
+		}
+		
+	}
+
+	public static void spawnResource(ArrayList<Resource> resources){
+		ResourceManager.resourceToSpawn.addAll(resources);
 	}
 	
 	private static ArrayList<Resource> getResourcesAtTile(Vector2i tilePosition){
@@ -93,16 +119,21 @@ public class ResourceManager {
 	
 	public static void generateLoadedResources(ResourceData[] resources) {
 		for(int i = 0; i < resources.length; i++){
-			addResourceByID(resources[i].id, new Vector2i(resources[i].x, resources[i].y));
+			addResourceByData(resources[i]);
 		}
 	}
 	
 	/** Make sure to add code when adding new resources into game.*/
-	public static void addResourceByID(int ID, Vector2i position){
-		Resource resource = null;
+	public static void addResourceByData(ResourceData data){
 		
-		if(ID == ResourceReader.getResourceData("PalmWood").id) resource = new PalmWood(position);
-		if(ID == ResourceReader.getResourceData("Rock").id) resource = new Rock(position);
+		Resource resource = null;
+		Vector2i position = new Vector2i(data.x, data.y);
+		
+		if(data.id == ResourceReader.getResourceProperties("PalmWood").id) resource = new PalmWood(position);
+		if(data.id == ResourceReader.getResourceProperties("Rock").id) resource = new Rock(position);
+		if(data.id == ResourceReader.getResourceProperties("PinkWood").id) resource = new PinkWood(position);
+		
+		resource.setRotation(data.rotation);
 		
 		addResource(resource);
 	}
@@ -129,6 +160,7 @@ public class ResourceManager {
 			newData.id = resource.getID();
 			newData.x = resource.getTiledPosition().x;
 			newData.y = resource.getTiledPosition().y;
+			newData.rotation = resource.getRotation();
 			resourceData[j] = newData;
 		}
 		

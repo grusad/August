@@ -52,8 +52,11 @@ public class Textures{
 	public static TextureRegion FLOWER_PINK = TextureSheet.ELEMENTS.getTextureRegion(7, 4, 16, 32); 
 	public static TextureRegion FLOWER_BLUE = TextureSheet.ELEMENTS.getTextureRegion(8, 5, 16, 16);
 	
-	public static TextureRegion PALM_WOOD = TextureSheet.RESOURCES.getTextureRegion(0, 0, 8, 8);
+	public static TextureRegion PALM_WOOD = TextureSheet.RESOURCES.getTextureRegion(0, 0, 8, 16);
 	public static TextureRegion ROCK = TextureSheet.RESOURCES.getTextureRegion(1, 0, 8, 8);
+	public static TextureRegion PINK_WOOD = TextureSheet.RESOURCES.getTextureRegion(2, 0, 8, 16);
+	
+	public static TextureRegion COCONUT = TextureSheet.FOOD.getTextureRegion(0, 0, 8, 8);
 	
 	public static TextureRegion getRandomRegion(TextureRegion[] regions){
 		return regions[random.nextInt(regions.length)];

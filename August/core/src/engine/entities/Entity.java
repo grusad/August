@@ -24,6 +24,9 @@ public class Entity {
 	protected Light light;
 	
 	protected TextureRegion region;
+	protected float rotation = 0;
+	protected float scaleX = 1;
+	protected float scaleY = 1;
 	
 	protected int xTextureOffset = 0;
 	protected int yTextureOffset = 0;
@@ -32,6 +35,7 @@ public class Entity {
 	protected int hitBoxHeight = 0;
 	
 	protected float transparency = 1f;
+	protected String name = "";
 	
 	/** Make sure to render in center of tile. */
 	protected int xCenterOffset = 0;
@@ -47,6 +51,7 @@ public class Entity {
 		this.region = region;
 		hitBoxWidth = region.getRegionWidth();
 		hitBoxHeight = region.getRegionHeight();
+
 	}
 	
 	public Entity(Vector2i tiledPosition, TextureRegion region){
@@ -68,8 +73,11 @@ public class Entity {
 		
 		batch.setColor(1, 1, 1, transparency);
 		
-		batch.draw(region, getWorldPosition().x + xCenterOffset- xTextureOffset,
-				getWorldPosition().y + yCenterOffset - yTextureOffset);	
+		
+		batch.draw(region, getWorldPosition().x + xCenterOffset - xTextureOffset,
+				getWorldPosition().y + yCenterOffset - yTextureOffset, region.getRegionWidth() / 2, 
+				region.getRegionHeight() / 2, region.getRegionWidth(),
+				region.getRegionHeight(), scaleX, scaleY, rotation);	
 		
 		batch.setColor(1, 1, 1, 1);
 	}
@@ -141,6 +149,34 @@ public class Entity {
 		this.inWater = inWater;
 	}
 	
+	public float getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
+	}
+
+	public float getScaleX() {
+		return scaleX;
+	}
+
+	public void setScaleX(float scaleX) {
+		this.scaleX = scaleX;
+	}
+
+	public float getScaleY() {
+		return scaleY;
+	}
+
+	public void setScaleY(float scaleY) {
+		this.scaleY = scaleY;
+	}
+	
+	public String getName(){
+		return name;
+	}
+
 	public static class LayerIndex{
 		
 		public static int DEFAULT = 0;

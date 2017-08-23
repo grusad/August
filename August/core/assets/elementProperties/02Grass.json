@@ -1,5 +1,5 @@
 {
-
+name: Grass
 spawnPercent: 100
 id: 2
 hp: 5
@@ -7,9 +7,13 @@ textureXOffset: 0
 textureYOffset: 0
 hitBoxW: 16
 hitBoxH: 16
-layerIndex: 0
+layerIndex: -1
 isMinable: true
 isSolid: false
+minDropResource: 0
+maxDropResource: 0
+minDropFood: 0
+maxDropFood: 0
 
 
 }

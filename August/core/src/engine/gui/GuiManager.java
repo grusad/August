@@ -7,22 +7,26 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import engine.main.Game;
+import engine.mobs.Player;
 
 public class GuiManager {
 	
 	private Stage stage;
 	
 	private Game game;
+	private Player player;
 	
 	public ButtonsGui buttonsGui;
 	public MenuGui menuGui;
 	public OptionsGui optionsGui;
 	public StatusGui statusGui;
 	public BuildGui buildGui;
+	public InfoGui infoGui;
 	
 	public GuiManager(Game game){
 		
 		this.game = game;
+		this.player = game.getWorldManager().getMobManager().getPlayer();
 		
 		stage = new Stage(new ScreenViewport());
 		
@@ -32,13 +36,15 @@ public class GuiManager {
 		menuGui = new MenuGui(this);
 		optionsGui = new OptionsGui(this);
 		statusGui = new StatusGui(this);
-		buildGui = new BuildGui(this);
+		buildGui = new BuildGui(this); 
+		infoGui = new InfoGui(this);
 		
 		stage.addActor(menuGui);
 		stage.addActor(buttonsGui);
 		stage.addActor(optionsGui);
 		stage.addActor(statusGui);
 		stage.addActor(buildGui);
+		stage.addActor(infoGui);
 		
 		menuGui.setVisible(false);
 		buildGui.setVisible(false);
@@ -49,6 +55,14 @@ public class GuiManager {
 	}
 	
 	public void update(){
+		
+		if(player.getSelectedEntity() != null){
+			infoGui.setVisible(true);
+			infoGui.setInfo("Looking at: " + player.getSelectedEntity().getName());
+		}
+		else{
+			infoGui.setVisible(false);
+		}
 		
 		if(menuGui.isVisible() || optionsGui.isVisible() || buildGui.isVisible()) Game.PAUSE = true;
 		else Game.PAUSE = false;

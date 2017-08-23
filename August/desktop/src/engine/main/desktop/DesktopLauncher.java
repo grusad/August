@@ -2,13 +2,14 @@ package engine.main.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 import engine.main.Game;
 
 public class DesktopLauncher {
 	
 	private static final int WIDTH = 1280;
 	private static final int HEIGHT = 720;
-	private static final String VERSION = "0.0.3";
+	private static final String VERSION = "0.0.4";
 	
 	private static final boolean V_SYNC = true;
 	

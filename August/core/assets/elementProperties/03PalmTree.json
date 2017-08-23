@@ -1,5 +1,6 @@
 {
 
+name: Palm Tree
 spawnPercent: 35
 id: 3
 hp: 100
@@ -10,6 +11,10 @@ hitBoxH: 16
 layerIndex: 0
 isMinable: true
 isSolid: true
+minDropResource: 3
+maxDropResource: 6
+minDropFood: 0
+maxDropFood: 0
 
 
 }

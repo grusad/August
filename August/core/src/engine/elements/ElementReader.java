@@ -13,9 +13,9 @@ public class ElementReader {
 	
 	private static Json json = new Json();
 	
-	private static Map<String, ElementData> data = new HashMap<>();
+	private static Map<String, ElementProperties> data = new HashMap<>();
 	
-	public static void loadElementData(){
+	public static void loadElementProperties(){
 		data.put("BlueFlower", get("01BlueFlower"));
 		data.put("Grass", get("02Grass"));
 		data.put("PalmTree", get("03PalmTree"));
@@ -30,16 +30,16 @@ public class ElementReader {
 		data.put("StoneSmallSingle", get("12StoneSmallSingle"));
 	}
 	
-	private static ElementData get(String fileName){
-		ElementData data = json.fromJson(ElementData.class, new FileHandle("elementData/" + fileName + ".json"));
+	private static ElementProperties get(String fileName){
+		ElementProperties data = json.fromJson(ElementProperties.class, new FileHandle("elementProperties/" + fileName + ".json"));
 		return data;
 	}
 	
-	public static ElementData getElementData(String key){
+	public static ElementProperties getElementProperties(String key){
 		return data.get(key);
 	}
 	
-	public static ElementData getRandomElementData(){
+	public static ElementProperties getRandomElementProperties(){
 		
 		List<String> keys = new ArrayList<String>(data.keySet());
 		String randomKey = keys.get(new Random().nextInt(keys.size()));
@@ -54,8 +54,9 @@ public class ElementReader {
 		data.clear();
 	}
 	
-	public static class ElementData{
+	public static class ElementProperties{
 		
+		public String name;
 		public int spawnPercent;
 		public int id;
 		public int hp;
@@ -66,6 +67,10 @@ public class ElementReader {
 		public int layerIndex;
 		public boolean isMinable;
 		public boolean isSolid;
+		public int minDropResource;
+		public int maxDropResource;
+		public int minDropFood;
+		public int maxDropFood;
 	}
 
 }

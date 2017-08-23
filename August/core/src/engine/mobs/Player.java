@@ -49,6 +49,10 @@ public class Player extends Mob{
 
 	public Player(Vector2 position) {
 		super(position);
+		hitBoxWidth = 9;
+		hitBoxHeight = 4;
+		this.xTextureOffset = 11;
+		this.yTextureOffset = 4;
 	}
 
 	@Override
@@ -158,7 +162,7 @@ public class Player extends Mob{
 				Resource resource = (Resource) selectedEntity;
 
 				if(Gdx.input.isTouched()){
-					
+					if(!resource.isMovable()) return;
 					LOCK_AT_SELECTED = true;
 					
 					Vector2i pos = new Vector2i(resource.getTiledPosition().x, resource.getTiledPosition().y);
@@ -276,10 +280,10 @@ public class Player extends Mob{
 		
 	}
 
-	@Override
-	public Box getHitBox() {
-		return new Box(new Vector2(getWorldPosition().x + 11, getWorldPosition().y + 4), getStaticWidth() - 23, getStaticHeight() / 2 - 12);
-	}
+	//@Override
+	//public Box getHitBox() {
+		//return new Box(new Vector2(getWorldPosition().x + 11, getWorldPosition().y + 4), getStaticWidth() - 23, getStaticHeight() / 2 - 12);
+	//}
 	
 	public Box getAimBox(){
 		

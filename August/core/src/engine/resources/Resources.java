@@ -17,5 +17,11 @@ public class Resources {
 		}
 	}
 	
+	public static class PinkWood extends Resource{
+		public PinkWood(Vector2i tiledPosition) {
+			super(tiledPosition, Textures.PINK_WOOD);
+		}
+	}
+	
 
 }

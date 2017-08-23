@@ -10,20 +10,21 @@ public class ResourceReader {
 	
 	private static Json json = new Json();
 	
-	private static Map<String, ResourceData> data = new HashMap<>();
+	private static Map<String, ResourceProperties> data = new HashMap<>();
 	
-	public static void loadResourceData(){
+	public static void loadResourceProperties(){
 		data.put("PalmWood", get("01PalmWood"));
 		data.put("Rock", get("02Rock"));
+		data.put("PinkWood", get("03PinkWood"));
 
 	}
 	
-	private static ResourceData get(String fileName){
-		ResourceData data = json.fromJson(ResourceData.class, new FileHandle("resourceData/" + fileName + ".json"));
+	private static ResourceProperties get(String fileName){
+		ResourceProperties data = json.fromJson(ResourceProperties.class, new FileHandle("resourceProperties/" + fileName + ".json"));
 		return data;
 	}
 	
-	public static ResourceData getResourceData(String key){
+	public static ResourceProperties getResourceProperties(String key){
 		return data.get(key);
 	}
 	
@@ -35,8 +36,9 @@ public class ResourceReader {
 		data.clear();
 	}
 	
-	public static class ResourceData{
+	public static class ResourceProperties{
 		
+		public String name;
 		public int id;
 		public int hitBoxW;
 		public int hitBoxH;

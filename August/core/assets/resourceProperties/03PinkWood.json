@@ -1,0 +1,10 @@
+{
+name: Pink Wood
+id: 3
+hitBoxW: 8
+hitBoxH: 16
+layerIndex: -1
+isMovable: true
+isSolid: false
+
+}

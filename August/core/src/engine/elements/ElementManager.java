@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import engine.elements.ElementReader.ElementData;
+import engine.elements.ElementReader.ElementProperties;
 import engine.elements.Elements.BlueFlower;
 import engine.elements.Elements.Grass;
 import engine.elements.Elements.PalmTree;
@@ -43,7 +43,7 @@ public class ElementManager {
 	public ElementManager(WorldManager worldManager){
 		this.worldManager = worldManager;
 		
-		ElementReader.loadElementData();
+		ElementReader.loadElementProperties();
 		
 	}
 	
@@ -62,16 +62,16 @@ public class ElementManager {
 			for(int x = 0; x < worldManager.getWidth(); x++){
 				if(denyElementAdding(x, y)) continue;
 				
-				ElementData elementData = ElementReader.getRandomElementData();
+				ElementProperties elementProperties = ElementReader.getRandomElementProperties();
 				
-				if(checkSpawnPercent(elementData))
-					addElementByID(elementData.id, new Vector2i(x, y));
+				if(checkSpawnPercent(elementProperties))
+					addElementByID(elementProperties.id, new Vector2i(x, y));
 			}
 		}
 	}
 	
-	private boolean checkSpawnPercent(ElementData elementData){
-		if(random.nextInt(100) <= elementData.spawnPercent) return true;
+	private boolean checkSpawnPercent(ElementProperties elementProperties){
+		if(random.nextInt(100) <= elementProperties.spawnPercent) return true;
 		else return false;
 	}
 	
@@ -90,18 +90,18 @@ public class ElementManager {
 	/** Make sure to add Elements!!*/
 	public void addElementByID(int ID, Vector2i tiledPosition){
 		
-		if(ID == ElementReader.getElementData("PalmTree").id) addElement(new PalmTree(tiledPosition));
-		if(ID == ElementReader.getElementData("PalmTreeSmall").id) addElement(new PalmTreeSmall(tiledPosition));
-		if(ID == ElementReader.getElementData("PinkTree01").id) addElement(new PinkTree01(tiledPosition));
-		if(ID == ElementReader.getElementData("PinkTree02").id) addElement(new PinkTree02(tiledPosition));
-		if(ID == ElementReader.getElementData("StoneSmallSingle").id) addElement(new StoneSmallSingle(tiledPosition));
-		if(ID == ElementReader.getElementData("StoneSmallDouble").id) addElement(new StoneSmallDouble(tiledPosition));
-		if(ID == ElementReader.getElementData("StoneMedium").id) addElement(new StoneMedium(tiledPosition));
-		if(ID == ElementReader.getElementData("StoneBig").id) addElement(new StoneBig(tiledPosition));
-		if(ID == ElementReader.getElementData("PotatoPlant").id) addElement(new PotatoPlant(tiledPosition));
-		if(ID == ElementReader.getElementData("Grass").id) addElement(new Grass(tiledPosition));
-		if(ID == ElementReader.getElementData("PinkFlower").id) addElement(new PinkFlower(tiledPosition));
-		if(ID == ElementReader.getElementData("BlueFlower").id) addElement(new BlueFlower(tiledPosition));
+		if(ID == ElementReader.getElementProperties("PalmTree").id) addElement(new PalmTree(tiledPosition));
+		if(ID == ElementReader.getElementProperties("PalmTreeSmall").id) addElement(new PalmTreeSmall(tiledPosition));
+		if(ID == ElementReader.getElementProperties("PinkTree01").id) addElement(new PinkTree01(tiledPosition));
+		if(ID == ElementReader.getElementProperties("PinkTree02").id) addElement(new PinkTree02(tiledPosition));
+		if(ID == ElementReader.getElementProperties("StoneSmallSingle").id) addElement(new StoneSmallSingle(tiledPosition));
+		if(ID == ElementReader.getElementProperties("StoneSmallDouble").id) addElement(new StoneSmallDouble(tiledPosition));
+		if(ID == ElementReader.getElementProperties("StoneMedium").id) addElement(new StoneMedium(tiledPosition));
+		if(ID == ElementReader.getElementProperties("StoneBig").id) addElement(new StoneBig(tiledPosition));
+		if(ID == ElementReader.getElementProperties("PotatoPlant").id) addElement(new PotatoPlant(tiledPosition));
+		if(ID == ElementReader.getElementProperties("Grass").id) addElement(new Grass(tiledPosition));
+		if(ID == ElementReader.getElementProperties("PinkFlower").id) addElement(new PinkFlower(tiledPosition));
+		if(ID == ElementReader.getElementProperties("BlueFlower").id) addElement(new BlueFlower(tiledPosition));
 		
 	}
 	

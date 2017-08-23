@@ -5,19 +5,17 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
+import engine.buildings.BuildingReader;
 import engine.climate.ClimateManager;
 import engine.elements.ElementManager;
 import engine.elements.ElementReader;
 import engine.entities.Entity;
 import engine.entities.Entity.LayerIndex;
 import engine.entities.InteractableEntity;
+import engine.entities.TiledEntityManager;
 import engine.graphics.Camera;
 import engine.light.LightManager;
 import engine.main.Game;
@@ -26,7 +24,6 @@ import engine.particles.ParticleManager;
 import engine.resources.ResourceManager;
 import engine.resources.ResourceReader;
 import engine.shaders.WaterShader;
-import engine.tiles.Tile;
 import engine.tiles.TileManager;
 import engine.utils.DataManager.PlayerData;
 import engine.utils.DataManager.PreferencesData;
@@ -63,7 +60,8 @@ public class WorldManager {
 		climateManager = new ClimateManager(this);
 		ParticleManager.setWorldManager(this);
 		ResourceManager.setWorldManager(this);
-		ResourceReader.loadResourceData();
+		TiledEntityManager.setWorldManager(this);
+		ResourceReader.loadResourceProperties();
 			
 	}
 	
@@ -221,7 +219,9 @@ public class WorldManager {
 	
 	/** Clean up all lists with entities and disposes all the resources.*/
 	public void cleanUp(){
+		ResourceReader.dispose();
 		ElementReader.dispose();
+		BuildingReader.dispose();
 		clearEntityLists();
 		elementManager.getAllElements().clear();
 		ParticleManager.particles.clear();

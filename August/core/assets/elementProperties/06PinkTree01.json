@@ -1,5 +1,6 @@
 {
 
+name: Pink Tree
 spawnPercent: 1
 id: 6
 hp: 100
@@ -10,4 +11,8 @@ hitBoxH: 16
 layerIndex: 0
 isMinable: true
 isSolid: true
+minDropResource: 1
+maxDropResource: 2
+minDropFood: 0
+maxDropFood: 0
 }
