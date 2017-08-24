@@ -2,9 +2,10 @@ package engine.elements;
 
 import java.util.ArrayList;
 
+import engine.entities.InteractableEntity;
+import engine.entities.TiledEntityManager;
+import engine.food.Foods.Coconut;
 import engine.graphics.Textures;
-import engine.resources.Resource;
-import engine.resources.ResourceManager;
 import engine.resources.Resources.PalmWood;
 import engine.resources.Resources.PinkWood;
 import engine.resources.Resources.Rock;
@@ -19,13 +20,14 @@ public class Elements {
 		}
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new PalmWood(tilePostion));
+				resources.add(new Coconut(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 		}
 		
 	}
@@ -38,13 +40,13 @@ public class Elements {
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
 			
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new PinkWood(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 			
 		}
 	}
@@ -57,13 +59,13 @@ public class Elements {
 
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new PinkWood(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 			
 		}
 	}
@@ -75,13 +77,13 @@ public class Elements {
 		}
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new Rock(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 		}
 	}
 	
@@ -92,13 +94,13 @@ public class Elements {
 		}
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new Rock(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 		}
 	}
 	
@@ -109,13 +111,13 @@ public class Elements {
 		}
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new Rock(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 		}
 	}
 	
@@ -126,13 +128,13 @@ public class Elements {
 		}
 		@Override
 		protected void dropResource(Vector2i tilePostion) {
-			ArrayList<Resource> resources = new ArrayList<>();
+			ArrayList<InteractableEntity> resources = new ArrayList<>();
 			
 			for(int i = 0; i < resourcesToDrop; i++){
 				resources.add(new Rock(tilePostion));
 			}
 			
-			ResourceManager.spawnResource(resources);
+			TiledEntityManager.spawnEntity(resources);
 		}
 	}
 	

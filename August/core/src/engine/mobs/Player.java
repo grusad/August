@@ -12,15 +12,13 @@ import engine.debug.DebugManager;
 import engine.elements.Element;
 import engine.entities.Entity;
 import engine.entities.InteractableEntity;
+import engine.entities.TiledEntityManager;
 import engine.graphics.Animation;
 import engine.graphics.CursorProperties;
 import engine.graphics.Textures;
 import engine.particles.ParticleManager;
 import engine.particles.ParticleType;
 import engine.resources.Resource;
-import engine.resources.ResourceManager;
-import engine.resources.Resources.PalmWood;
-import engine.resources.Resources.Rock;
 import engine.tiles.Tile;
 import engine.utils.Box;
 import engine.utils.DataManager.PlayerData;
@@ -57,14 +55,6 @@ public class Player extends Mob{
 
 	@Override
 	public void update() {
-		
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)){
-			ResourceManager.addResource(new PalmWood(new Vector2i(Input.getTilePosition().x, Input.getTilePosition().y)));
-		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)){
-			ResourceManager.addResource(new Rock(new Vector2i(Input.getTilePosition().x, Input.getTilePosition().y)));
-		}
 		
 		super.update();
 		
@@ -158,20 +148,19 @@ public class Player extends Mob{
 				return;
 			}
 			
-			if(selectedEntity instanceof Resource){
-				Resource resource = (Resource) selectedEntity;
-
+			if(selectedEntity.isMovable()){
+		
 				if(Gdx.input.isTouched()){
-					if(!resource.isMovable()) return;
+
 					LOCK_AT_SELECTED = true;
 					
-					Vector2i pos = new Vector2i(resource.getTiledPosition().x, resource.getTiledPosition().y);
+					Vector2i pos = new Vector2i(selectedEntity.getTiledPosition().x, selectedEntity.getTiledPosition().y);
 					
 					pos.x = Input.getTilePosition().x;
 					pos.y = Input.getTilePosition().y;
 					
 					
-					resource.moveToTile(pos);
+					selectedEntity.moveToTile(pos);
 					
 				}
 				else if(LOCK_AT_SELECTED){
@@ -196,7 +185,7 @@ public class Player extends Mob{
 		
 		Tile tile = worldManager.getTileManager().getTile(entity.getTiledPosition().x, entity.getTiledPosition().y);
 		if(tile.isSwimmable()){
-			ResourceManager.removeResource((Resource) entity);
+			TiledEntityManager.removeEntity(entity);
 			ParticleManager.spawnParticleEffect(ParticleType.WaterParticle, entity.getHitBoxCenterPos(), 100);
 			return;
 		}

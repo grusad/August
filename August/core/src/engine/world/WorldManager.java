@@ -16,12 +16,12 @@ import engine.entities.Entity;
 import engine.entities.Entity.LayerIndex;
 import engine.entities.InteractableEntity;
 import engine.entities.TiledEntityManager;
+import engine.food.FoodReader;
 import engine.graphics.Camera;
 import engine.light.LightManager;
 import engine.main.Game;
 import engine.mobs.MobManager;
 import engine.particles.ParticleManager;
-import engine.resources.ResourceManager;
 import engine.resources.ResourceReader;
 import engine.shaders.WaterShader;
 import engine.tiles.TileManager;
@@ -59,9 +59,9 @@ public class WorldManager {
 		mobManager = new MobManager(this);
 		climateManager = new ClimateManager(this);
 		ParticleManager.setWorldManager(this);
-		ResourceManager.setWorldManager(this);
 		TiledEntityManager.setWorldManager(this);
 		ResourceReader.loadResourceProperties();
+		FoodReader.loadFoodProperties();
 			
 	}
 	
@@ -70,7 +70,6 @@ public class WorldManager {
 		elementManager.generateNewElements();
 		mobManager.spawnPlayerAtRandomIsland();
 		climateManager.setRandomValues();
-		
 	}
 	
 	public void generateLoadedWorld(WorldData data, PlayerData playerData, PreferencesData prefData){
@@ -81,7 +80,7 @@ public class WorldManager {
 		mobManager.spawnPlayerAtLoadedPosition(playerData);
 		WorldProperties.setProperties(data);
 		climateManager.setData(data);
-		ResourceManager.generateLoadedResources(data.resource);
+		TiledEntityManager.generateLoadedEntities(data.entities);
 		
 	}
 	
@@ -97,19 +96,18 @@ public class WorldManager {
 		mobManager.update();
 		climateManager.update();
 		ParticleManager.update();
-		ResourceManager.update(camera);
+		TiledEntityManager.update(camera);
 		
 		entities.addAll(elementManager.getElementsOnScreen());
 		entities.addAll(mobManager.getMobs());
 		entities.addAll(ParticleManager.particles);
-		entities.addAll(ResourceManager.resourcesOnScreen);
+		entities.addAll(TiledEntityManager.entitiesOnScreen);
 		
 		sortEntityLists();
 		
 		mobManager.getPlayer().update();
 		
 		Collections.sort(entities, Utils.positionSorter);
-		Collections.sort(bottomLayerEntities, Utils.positionSorter);
 		
 	}
 	
@@ -225,8 +223,8 @@ public class WorldManager {
 		clearEntityLists();
 		elementManager.getAllElements().clear();
 		ParticleManager.particles.clear();
-		ResourceManager.resources.clear();
-		ResourceManager.resourcesOnScreen.clear();
+		TiledEntityManager.entities.clear();
+		TiledEntityManager.entitiesOnScreen.clear();
 		
 		if(lightManager != null){
 			lightManager.dispose();

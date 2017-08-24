@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 
 import engine.climate.ClimateManager;
+import engine.entities.TiledEntityManager;
 import engine.main.Game;
-import engine.resources.ResourceManager;
 import engine.world.WorldProperties;
 
 public class DataManager {
@@ -103,7 +103,7 @@ public class DataManager {
 		data.fogLevel = climateManager.getFogLevel();
 		data.rainLevel = climateManager.getRainLevel();
 		data.windLevel = climateManager.getWindLevel();
-		data.resource = ResourceManager.writeResourcesToData();
+		data.entities = TiledEntityManager.writeEntitiesToData(); 
 		
 		return data;
 	}
@@ -121,7 +121,7 @@ public class DataManager {
 		
 		public int[] tiles;
 		public int[] elements;
-		public ResourceData[] resource;
+		public EntityData[] entities;
 		public float time, timeSpeed;
 		public float windLevel;
 		public float fogLevel;
@@ -130,7 +130,8 @@ public class DataManager {
 		
 	}
 	
-	public static class ResourceData{
+	public static class EntityData{
+		public String type;
 		public int id;
 		public int x;
 		public int y;

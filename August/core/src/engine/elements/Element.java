@@ -15,7 +15,6 @@ public abstract class Element extends InteractableEntity{
 	
 	private float maxHP;
 	private float currentHP;
-	private int id;
 	protected int resourcesToDrop = 0;
 	
 	public Element(Vector2i tilePosition, TextureRegion region) {
@@ -68,10 +67,6 @@ public abstract class Element extends InteractableEntity{
 	
 	public float getCurrentHP(){
 		return currentHP;
-	}
-	
-	public int getID(){
-		return id;
 	}
 	
 }

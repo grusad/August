@@ -8,8 +8,6 @@ import engine.resources.ResourceReader.ResourceProperties;
 import engine.utils.Vector2i;
 
 public class Resource extends InteractableEntity{
-	
-	private int id;
 
 	public Resource(Vector2i tiledPosition, TextureRegion region) {
 		super(tiledPosition, region);
@@ -32,16 +30,6 @@ public class Resource extends InteractableEntity{
 	
 	public void render(SpriteBatch batch){
 		super.render(batch);
-	}
-	
-	public void moveToTile(Vector2i tilePos){
-		ResourceManager.removeResource(this);
-		super.moveToTile(tilePos);
-		ResourceManager.addResource(this);
-	}
-	
-	public int getID(){
-		return id;
 	}
 	
 }

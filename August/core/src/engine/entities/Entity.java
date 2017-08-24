@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import engine.light.Light;
 import engine.light.LightManager;
+import engine.resources.Resource;
 import engine.tiles.Tile;
 import engine.utils.Box;
 import engine.utils.Vector2i;
@@ -27,6 +28,8 @@ public class Entity {
 	protected float rotation = 0;
 	protected float scaleX = 1;
 	protected float scaleY = 1;
+	
+	protected int id;
 	
 	protected int xTextureOffset = 0;
 	protected int yTextureOffset = 0;
@@ -73,10 +76,11 @@ public class Entity {
 		
 		batch.setColor(1, 1, 1, transparency);
 		
+		rotation += 0.5f;
 		
 		batch.draw(region, getWorldPosition().x + xCenterOffset - xTextureOffset,
-				getWorldPosition().y + yCenterOffset - yTextureOffset, region.getRegionWidth() / 2, 
-				region.getRegionHeight() / 2, region.getRegionWidth(),
+				getWorldPosition().y + yCenterOffset - yTextureOffset, region.getRegionHeight() / 2, 
+				region.getRegionWidth() / 2, region.getRegionWidth(),
 				region.getRegionHeight(), scaleX, scaleY, rotation);	
 		
 		batch.setColor(1, 1, 1, 1);
@@ -175,6 +179,10 @@ public class Entity {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public int getID(){
+		return id;
 	}
 
 	public static class LayerIndex{

@@ -1,7 +1,7 @@
 {
 name: Palm Wood
 id: 1
-hitBoxW: 8
+hitBoxW: 16
 hitBoxH: 16
 layerIndex: -1
 isMovable: true

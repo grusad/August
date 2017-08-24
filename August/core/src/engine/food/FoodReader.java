@@ -13,7 +13,7 @@ public class FoodReader {
 	private static Map<String, FoodProperties> data = new HashMap<>();
 	
 	public static void loadFoodProperties(){
-		
+		data.put("Coconut", get("01Coconut"));
 	}
 	
 	private static FoodProperties get(String fileName){
@@ -36,8 +36,8 @@ public class FoodReader {
 		public int minHPGain;
 		public int maxHPGain;
 		public int layerIndex;
-		public int isMovable;
-		public int isSolid;
+		public boolean isMovable;
+		public boolean isSolid;
 	}
 
 }

@@ -19,14 +19,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import engine.climate.ClimateManager;
 import engine.elements.Element;
 import engine.elements.ElementManager;
+import engine.entities.Entity;
+import engine.entities.TiledEntityManager;
 import engine.graphics.Camera;
 import engine.graphics.SkinLoader;
 import engine.main.Game;
 import engine.mobs.Mob;
 import engine.mobs.MobManager;
 import engine.mobs.Player;
-import engine.resources.Resource;
-import engine.resources.ResourceManager;
 import engine.tiles.Tile;
 import engine.world.WorldManager;
 import engine.world.WorldProperties;
@@ -164,10 +164,10 @@ public class DebugManager {
 			renderer.rect(element.getHitBox().getX(), element.getHitBox().getY(), element.getHitBox().getWidth(), element.getHitBox().getHeight());
 		}
 		
-		for(int i = 0; i < ResourceManager.resourcesOnScreen.size(); i++){
-			Resource r = ResourceManager.resourcesOnScreen.get(i);
+		for(int i = 0; i < TiledEntityManager.entitiesOnScreen.size(); i++){
+			Entity entity = TiledEntityManager.entitiesOnScreen.get(i);
 			renderer.setColor(Color.WHITE);
-			renderer.rect(r.getHitBox().getX(), r.getHitBox().getY(), r.getHitBox().getWidth(), r.getHitBox().getHeight());
+			renderer.rect(entity.getHitBox().getX(), entity.getHitBox().getY(), entity.getHitBox().getWidth(), entity.getHitBox().getHeight());
 		}
 		
 	}

@@ -93,7 +93,9 @@ public abstract class InteractableEntity extends Entity{
 	}
 	
 	public void moveToTile(Vector2i tilePos){
+		TiledEntityManager.removeEntity(this);
 		setPosition(tilePos);
+		TiledEntityManager.addEntity(this);
 	}
 	
 	public boolean isMinable(){
