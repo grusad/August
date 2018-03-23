@@ -76,7 +76,6 @@ public class Entity {
 		
 		batch.setColor(1, 1, 1, transparency);
 		
-		rotation += 0.5f;
 		
 		batch.draw(region, getWorldPosition().x + xCenterOffset - xTextureOffset,
 				getWorldPosition().y + yCenterOffset - yTextureOffset, region.getRegionHeight() / 2, 
